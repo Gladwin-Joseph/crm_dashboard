@@ -4,14 +4,11 @@ import Image from '../login1.png'
 import styles from '../Login.module.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { FaRegEye } from "react-icons/fa6";
-import { FaRegEyeSlash } from "react-icons/fa6";
 
 const Login = () => {
   const [id,setId]= useState('');
   const [password,setPassword]= useState('');
   const [email,setEmail]= useState('')
-  const [visible,setVisible]= useState(true)
   const navigate= useNavigate();
 
   const handleChange = (e) => {
