@@ -9,6 +9,10 @@ const Login = () => {
   const [id,setId]= useState('');
   const [password,setPassword]= useState('');
   const [email,setEmail]= useState('')
+  const [selectedRole, setSelectedRole] = useState('');
+
+  const roles = ['Champion', 'Admin/Director', 'Branch Head'];
+
   const navigate= useNavigate();
 
   const handleChange = (e) => {
@@ -16,6 +20,8 @@ const Login = () => {
       setId(e.target.value);
     } else if(e.target.type === "email"){
         setEmail(e.target.value)
+    }else if(e.target.id === "role"){
+      setSelectedRole(e.target.value)
     }
     else {
       setPassword(e.target.value);
@@ -24,7 +30,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const credentials = { id, password,email };
+    const credentials = { id, password,email,selectedRole };
     console.log(credentials)
 
      axios.post("http://localhost:5000/formdata", credentials)
@@ -52,7 +58,17 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
               <input type='number' placeholder='User Id' value={id} onChange={handleChange} />
               <input type="email" placeholder='Enter Email' className='input' value={email} onChange={handleChange}/> 
-              <input type="password" placeholder='Enter Password' className='input' value={password} onChange={handleChange}/>               
+              <input type="password" placeholder='Enter Password' className='input' value={password} onChange={handleChange}/>
+              <label>
+                <select value={selectedRole} onChange={handleChange} id="role">
+                  <option value="">Please choose your Role</option>
+                  {roles.map((role) => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </select>
+             </label>               
               <button className='form-button' type='submit'>Sign In</button>
           </form>
             <p>

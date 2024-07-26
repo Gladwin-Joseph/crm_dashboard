@@ -27,7 +27,6 @@
 }
 
 
-
 .form-button {
     width: 100%;
     background: #0A6ED1;
@@ -72,4 +71,16 @@ input::-webkit-inner-spin-button {
 
 .password {
     position: absolute
+}
+
+select {
+    border:1px solid #C5C4C8;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    margin-top: 15px;
+    color: rgb(109, 109, 109);
 }
