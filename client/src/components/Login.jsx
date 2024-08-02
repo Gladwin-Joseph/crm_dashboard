@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const [id,setId]= useState('');
   const [password,setPassword]= useState('');
-  const [email,setEmail]= useState('')
+  const [email,setEmail]= useState('');
   const [selectedRole, setSelectedRole] = useState('');
 
   const roles = ['Champion', 'Admin/Director', 'Branch Head'];
@@ -20,7 +20,7 @@ const Login = () => {
       setId(e.target.value);
     } else if(e.target.type === "email"){
         setEmail(e.target.value)
-    }else if(e.target.id === "role"){
+    } else if(e.target.id === "role"){
       setSelectedRole(e.target.value)
     }
     else {

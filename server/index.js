@@ -19,12 +19,14 @@ app.get('/api/formdata',(req,res) => {
   res.json(tempDataStore)
 })
 
+
 app.get('/api/data', async (req, res) => {
   
   let id = tempDataStore.id;
   let password = tempDataStore.password;
   let email= tempDataStore.email;
   let role= tempDataStore.selectedRole;
+
   try {
     let today = new Date().toISOString().slice(0, 10)
     //yesterday logic
@@ -45,6 +47,25 @@ app.get('/api/data', async (req, res) => {
     //Get current time
     const currentDate = new Date();
 
+    //previous month logic
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+  };
+  
+  // Get the first day of the previous month
+  const firstDayOfPreviousMonth = new Date();
+  firstDayOfPreviousMonth.setDate(1);
+  firstDayOfPreviousMonth.setMonth(firstDayOfPreviousMonth.getMonth() - 1);
+  const formattedFirstDay = formatDate(firstDayOfPreviousMonth);
+  
+  // Get the last day of the previous month
+  const lastDayOfPreviousMonth = new Date();
+  lastDayOfPreviousMonth.setDate(0); // Setting day to 0 gives the last day of the previous month
+  const formattedLastDay = formatDate(lastDayOfPreviousMonth);
+  
   // Create a DateTimeFormat object for Asia/Kolkata timezone
   const formatter = new Intl.DateTimeFormat('en-US', {
       hour: '2-digit',
@@ -64,7 +85,7 @@ app.get('/api/data', async (req, res) => {
       //quote released yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
       //visits last month
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-06-01T06:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%272024-06-30T23:00:00Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${formattedFirstDay}T06:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${formattedLastDay}T23:00:00Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
       //visits current month
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
       //visits today
@@ -87,7 +108,7 @@ app.get('/api/data', async (req, res) => {
       //quote released yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
       //visits last month
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-06-01T06:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%272024-06-30T23:00:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${formattedFirstDay}T06:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${formattedLastDay}T23:00:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits current month
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits today
@@ -110,7 +131,7 @@ app.get('/api/data', async (req, res) => {
       //quote released yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
       //visits last month
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-06-01T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%272024-06-30T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${formattedFirstDay}T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${formattedLastDay}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits current month
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits today

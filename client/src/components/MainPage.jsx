@@ -8,9 +8,8 @@ const MainPage =  () => {
      .then(response => response.json())
      .then(data => setData(data))
      .catch(error => console.error(error))}
-
      fetchData();
-
+     
      const interval= setInterval(fetchData,refreshInterval);
 
      return() => clearInterval(interval)
