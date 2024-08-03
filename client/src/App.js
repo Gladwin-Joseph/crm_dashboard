@@ -2,6 +2,8 @@ import Navbar from './components/Navbar';
 import {Route, Routes, BrowserRouter } from 'react-router-dom';
 import Login from './components/Login'
 import { useEffect, useState } from 'react';
+import MainPage from './components/MainPage';
+import UserData from './components/UserData';
 
 
 function App() {
