@@ -27,7 +27,7 @@ const MainPage = () => {
           <h4 className="text">Total Quote released -MTD</h4>
           <h2 className="numbers">{JSON.stringify(data?.data1)}</h2>
         </Link>
-        <Link to={`/userdata`} className="card">
+        <Link to={`/quotetdy`} className="card">
           <h4 className="text">Total Quote released Today</h4>
           <h2 className="numbers">{JSON.stringify(data?.data2)}</h2>
         </Link>
@@ -38,17 +38,17 @@ const MainPage = () => {
       </div>
       <h3>Stock Transfer</h3>
       <div className="container">
-        <Link to={`/userdata`} className="card">
+        <Link to={`/stockmonthly`} className="card">
           <h4 className="text">ST Released-Monthly</h4>
           <h2 className="numbers">{JSON.stringify(data?.data8)}</h2>
         </Link>
 
-        <Link to={`/userdata`} className="card">
+        <Link to={`/stocktdy`} className="card">
           <h4 className="text">ST Released-Today</h4>
           <h2 className="numbers">{JSON.stringify(data?.data9)}</h2>
         </Link>
 
-        <Link to={`/userdata`} className="card">
+        <Link to={`/stockyest`} className="card">
           <h4 className="text">ST Released-Yesterday</h4>
           <h2 className="numbers">{JSON.stringify(data?.data10)}</h2>
         </Link>

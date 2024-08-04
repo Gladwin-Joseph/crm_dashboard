@@ -333,7 +333,13 @@ app.get("/api/userdata", async (req, res) => {
     const userData = {
       result1: data[0].d.results,
       result2: data[1].d.results,
-      result3: data[2].d.results
+      result3: data[2].d.results,
+      //stock monthly
+      result4: data[7].d.results,
+      //stock today
+      result5: data[8].d.results,
+      //stock yesterday
+      result6: data[9].d.results
     };
 
     res.json(userData);
