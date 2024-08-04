@@ -1,0 +1,9 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("./login.png");
+    background-size: cover;
+    background-position: center top;  
+    height: 100%;
+}
