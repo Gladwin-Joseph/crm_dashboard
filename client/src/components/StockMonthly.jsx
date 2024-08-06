@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Table.css";
-const UserData = () => {
+
+const StockMonthly = () => {
   const [users, setUsers] = useState({});
   const [refreshInterval, setRefreshInterval] = useState(20000);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading,setIsLoading]= useState(true)
   useEffect(() => {
     const fetchData = () => {
       fetch("http://localhost:5000/api/userdata")
@@ -25,10 +26,10 @@ const UserData = () => {
     <table>
       <thead>
         <tr>
-          <th>Quote ID</th>
+          <th>ST-ID</th>
           <th>Branch Name</th>
           <th>User</th>
-          <th>Quote Status</th>
+          <th>Stock Transfer Status</th>
         </tr>
       </thead>
       <tbody>
@@ -38,13 +39,13 @@ const UserData = () => {
             Loading...
           </td>
         </tr>
-      ) : users.result1?.length > 0 ? (
-        users.result1.map((user, index) => (
+      ) : users.result4?.length > 0 ? (
+        users.result4.map((user, index) => (
           <tr key={index}>
             <td>{user["ID"]}</td>
-            <td>{user["SalesOfficeName"]}</td>
+            <td>{user["SalesUnitName"]}</td>
             <td>{user["CreatedBy"]}</td>
-            <td>{user["ResultStatusCodeText"]}</td>
+            <td>{user["UserStatusCodeText"]}</td>
           </tr>
         ))
       ) : (
@@ -53,10 +54,10 @@ const UserData = () => {
             Nothing is here.
           </td>
         </tr>
-      )}  
+      )}
       </tbody>
     </table>
   );
 };
 
-export default UserData;
+export default StockMonthly;

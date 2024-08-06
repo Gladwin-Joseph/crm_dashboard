@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Table.css";
-const UserData = () => {
+
+const QuoteYest = () => {
   const [users, setUsers] = useState({});
   const [refreshInterval, setRefreshInterval] = useState(20000);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,8 +39,8 @@ const UserData = () => {
             Loading...
           </td>
         </tr>
-      ) : users.result1?.length > 0 ? (
-        users.result1.map((user, index) => (
+      ) : users.result3?.length > 0 ? (
+        users.result3.map((user, index) => (
           <tr key={index}>
             <td>{user["ID"]}</td>
             <td>{user["SalesOfficeName"]}</td>
@@ -53,10 +54,10 @@ const UserData = () => {
             Nothing is here.
           </td>
         </tr>
-      )}  
+      )}
       </tbody>
     </table>
   );
 };
 
-export default UserData;
+export default QuoteYest;

@@ -331,7 +331,26 @@ app.get('/api/userdata', async (req, res) =>{
 
     const data = responses.map(response => response.data);
     const userData= {
-      result1: data[0].d.results
+      //quote monthly
+      result1: data[0].d.results,
+      //quote today
+      result2: data[1].d.results,
+      //quote yesterday
+      result3: data[2].d.results,
+      //stock monthly
+      result4: data[7].d.results,
+      //stock today
+      result5: data[8].d.results,
+      //stock yesterday
+      result6: data[9].d.results,
+      //visits last month
+      result7: data[3].d.results,
+      //visits monthly
+      result8: data[4].d.results,
+      //visits today
+      result9: data[5].d.results,
+      //visits yesterday
+      result10: data[6].d.results,
     }
 
     res.json(userData);

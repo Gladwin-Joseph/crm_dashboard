@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import UserData from './UserData';
+import { Link } from 'react-router-dom';
 
 const MainPage =  () => {
   const [data,setData]= useState(null);
@@ -19,64 +18,64 @@ const MainPage =  () => {
 
   
   return (
-    <div className='main-page'>
-                    <h3>Quotes</h3>
-                        <div className='container'>
-                            <div className='card'>
-                                <h4 className='text'>Total Quote released -MTD</h4>
-                                <h2 className='numbers'>{JSON.stringify(data?.data1)}</h2>
-                            </div>
-                                    <div className='card'>
-                                        <h4 className='text'>Total Quote released Today</h4>
-                                        <h2 className='numbers'>{JSON.stringify(data?.data2)}</h2>
-                                    </div>
-                                    <div className='card'>
-                                        <h4 className='text'>Total Quote released Yesterday</h4>
-                                        <h2 className='numbers'>{JSON.stringify(data?.data3)}</h2>
-                                    </div>
-                         </div>
-                    <h3>Stock Transfer</h3>
-                    <div className='container'>
-                                        <div className='card'>
-                                            <h4 className='text'>ST Released-Monthly</h4>
-                                            <h2 className='numbers'>{JSON.stringify(data?.data8)}</h2>
-                                        </div>
-
-                                        <div className='card'>
-                                            <h4 className='text'>ST Released-Today</h4>
-                                            <h2 className='numbers'>{JSON.stringify(data?.data9)}</h2>
-                                        </div>
-
-                                        <div className='card'>
-                                            <h4 className='text'>ST Released-Yesterday</h4>
-                                            <h2 className='numbers'>{JSON.stringify(data?.data10)}</h2>
-                                        </div>
-                    </div>
-
-                        <h3>Visits</h3>
-                        <div className='container'>
-                                            <div className='card'>
-                                                <h4 className='text'>Last Month Visits(Completed)</h4>
-                                                <h2 className='numbers'>{JSON.stringify(data?.data4)}</h2>
-                                            </div>
-
-                                            <div className='card'>
-                                                <h4 className='text'>Current Month Visits(Completed)</h4>
-                                                <h2 className='numbers'>{JSON.stringify(data?.data5)}</h2>
-                                            </div>
-
-                                            <div className='card'>
-                                                <h4 className='text'>Today Visits(Completed)</h4>
-                                                <h2 className='numbers'>{JSON.stringify(data?.data6)}</h2>
-                                            </div>
-
-                                            <div className='card'>
-                                                <h4 className='text'>Yesterday Visits(Completed)</h4>
-                                                <h2 className='numbers'>{JSON.stringify(data?.data7)}</h2>
-                                            </div>
-                        </div>
+    <div className="main-page">
+    <h3>Quotes</h3>
+    <div className="container">
+      <Link to={`/userdata`} className="card">
+        <h4 className="text">Total Quote released -MTD</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data1)}</h2>
+      </Link>
+      <Link to={`/quotetdy`} className="card">
+        <h4 className="text">Total Quote released Today</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data2)}</h2>
+      </Link>
+      <Link to={`/quoteyest`} className="card">
+        <h4 className="text">Total Quote released Yesterday</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data3)}</h2>
+      </Link>
     </div>
-  )
-}
+    <h3>Stock Transfer</h3>
+    <div className="container">
+      <Link to={`/stockmonthly`} className="card">
+        <h4 className="text">ST Released-Monthly</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data8)}</h2>
+      </Link>
+
+      <Link to={`/stocktdy`} className="card">
+        <h4 className="text">ST Released-Today</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data9)}</h2>
+      </Link>
+
+      <Link to={`/stockyest`} className="card">
+        <h4 className="text">ST Released-Yesterday</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data10)}</h2>
+      </Link>
+    </div>
+
+    <h3>Visits</h3>
+    <div className="container">
+      <Link to={`/visitlastmonth`} className="card">
+        <h4 className="text">Last Month Visits(Completed)</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data4)}</h2>
+      </Link>
+
+      <Link to={`/visitmonthly`} className="card">
+        <h4 className="text">Current Month Visits(Completed)</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data5)}</h2>
+      </Link>
+
+      <Link to={`/visittdy`} className="card">
+        <h4 className="text">Today Visits(Completed)</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data6)}</h2>
+      </Link>
+
+      <Link to={`/visityest`} className="card">
+        <h4 className="text">Yesterday Visits(Completed)</h4>
+        <h2 className="numbers">{JSON.stringify(data?.data7)}</h2>
+      </Link>
+    </div>
+  </div>
+);
+};
 
 export default MainPage;
