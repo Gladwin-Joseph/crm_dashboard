@@ -1,11 +1,10 @@
 const express = require('express');
 const axios = require('axios');
-const cheerio = require('cheerio'); 
 const app = express();
 const PORT = 5000;
 const cors= require("cors");
 
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 
 let tempDataStore = {};
@@ -244,9 +243,9 @@ app.get('/api/userdata', async (req, res) =>{
   const localizedTime = formatter.format(currentDate);
     const urls= [
       //quote released mtd
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(ExternalPriceCalculationStatusCodeText%20eq%20%27Calculated Successfully%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(ExternalPriceCalculationStatusCodeText%20eq%20%27Calculated Successfully%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //quote released today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)`,
       //quote released yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
       //visits last month
@@ -260,16 +259,16 @@ app.get('/api/userdata', async (req, res) =>{
       //stock transfer monthly
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //stock transfer today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //stock transfer today
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
     ]
 
     const alturls= [
       //quote released mtd
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(ExternalPriceCalculationStatusCodeText%20eq%20%27Calculated Successfully%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(ExternalPriceCalculationStatusCodeText%20eq%20%27Calculated Successfully%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //quote released today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)`,
       //quote released yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
       //visits last month
@@ -277,20 +276,22 @@ app.get('/api/userdata', async (req, res) =>{
       //visits current month
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)`,
       //visits yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //stock transfer monthly
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //stock transfer today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //stock transfer today
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
+      //employee data
+      "https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/EmployeeBasicDataCollection/?$filter=(JobName%20eq%20%27Champion%27)and(UserLockedIndicator%20eq%20false)",
     ]
 
     const urls1= [
       //quote released mtd
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(ExternalPriceCalculationStatusCodeText%20eq%20%27Calculated Successfully%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(ExternalPriceCalculationStatusCodeText%20eq%20%27Calculated Successfully%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //quote released today
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
       //quote released yesterday
@@ -300,15 +301,17 @@ app.get('/api/userdata', async (req, res) =>{
       //visits current month
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)`,
       //visits yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //stock transfer monthly
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //stock transfer today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
-      //stock transfer today
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
+      //stock transfer yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
+      //employee data
+      "https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/EmployeeBasicDataCollection/?$filter=(JobName%20eq%20%27Champion%27)and(UserLockedIndicator%20eq%20false)",
     ]
 
     let preprocessedUrls;
@@ -351,6 +354,8 @@ app.get('/api/userdata', async (req, res) =>{
       result9: data[5].d.results,
       //visits yesterday
       result10: data[6].d.results,
+      //employee data
+      result11: data[10].d.results,
     }
 
     res.json(userData);

@@ -12,6 +12,7 @@ import VisitLastMonth from './components/VisitLastMonth';
 import VisitMonthly from './components/VisitMonthly'
 import VisitTdy from './components/VisitTdy';
 import VisitYest from './components/VisitYest';
+import QuoteActivity from './components/QuoteActivity';
  
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/visitmonthly" element={<VisitMonthly />} />
         <Route path="/visittdy" element={<VisitTdy />} />
         <Route path="/visityest" element={<VisitYest />} />
+        <Route path="/quoteactivity" element={<QuoteActivity />} />
       </Routes>
     </BrowserRouter>
   </div>

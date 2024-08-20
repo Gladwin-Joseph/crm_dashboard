@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Table.css";
-
 const VisitYest = () => {
   const [users, setUsers] = useState({});
   const [refreshInterval, setRefreshInterval] = useState(20000);

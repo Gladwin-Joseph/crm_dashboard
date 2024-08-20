@@ -54,7 +54,7 @@ const Login = () => {
       <div className={styles.root}>
        <div className='form-container'>
         <div className='form-control'> 
-          <img src={Image} className='image' />
+          <img src={Image} className='image' alt="logo"/>
           <form onSubmit={handleSubmit}>
               <input type='number' placeholder='User Id' value={id} onChange={handleChange} />
               <input type="email" placeholder='Enter Email' className='input' value={email} onChange={handleChange}/> 

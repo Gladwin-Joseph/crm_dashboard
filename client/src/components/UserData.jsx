@@ -11,7 +11,7 @@ const UserData = () => {
         .then((users) => {
           setUsers(users); // Set the users in your state
           console.log(users);
-          setIsLoading(false) // Log the fetched data to the console
+          setIsLoading(false) 
         })
         .catch((error) => console.error(error));
     };

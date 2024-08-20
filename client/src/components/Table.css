@@ -2,7 +2,7 @@ table {
     border-collapse: collapse;
     max-width: 900px;
     width: 100%;
-    margin: 2rem auto;
+    margin: 1rem auto;
   }
   
   table th,
@@ -18,3 +18,66 @@ table {
   .heading {
     font-size: larger;
   }
+
+.search {
+  font-size: 15px;
+  margin-top: 10px;
+  width: 300px;
+  display: inline-block;
+}
+.excelbutton {
+  background-color: #24a019;
+  color:white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  font-weight:500;
+  margin-top: 15px;
+  box-shadow: 0px 2px 2px lightgray;
+  text-transform: uppercase;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  transition: 0.3s all ease-in-out;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.excelbutton:hover {
+  transform: scale(1.1, 1.1);
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 400px;
+  width: fit-content;
+  width: 100%;
+  max-width: 100%;
+}
+
+.records {
+  text-align: center;
+  font-size: large;
+  font-weight: 500;
+}
+
+.filteredcheckboxes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: nowrap;
+}
+
+.filteredcheckboxes label {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.filteredcheckboxes input[type= "checkbox"] {
+  margin-right: 10px;
+}
