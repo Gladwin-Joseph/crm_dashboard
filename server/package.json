@@ -4,11 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-<<<<<<< HEAD
     "build": "react-scripts build"
-=======
-    "start": "react-scripts start"
->>>>>>> 21c7e350296a34458cbdd0b6e8b48c7c00b4d505
   },
   "author": "",
   "license": "ISC",
