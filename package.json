@@ -4,5 +4,8 @@
     "qrcode.react": "^3.1.0",
     "xlsx": "^0.18.5",
     "xml-js": "^1.6.11"
+  },
+  "scripts": {
+    "build": "react-scripts build"
   }
 }
