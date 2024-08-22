@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import Dropdown from './Dropdown';
 
 const MainPage =  () => {
   const [data,setData]= useState(null);
@@ -20,7 +19,6 @@ const MainPage =  () => {
   
   return (
     <div className="main-page">
-      <Dropdown />
     <h3 className='quotes'>Quotes</h3>
     <Link to={`/quoteactivity`}>
       <button className='quotebtn'>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import "./Table.css";
 import * as XLSX from 'xlsx';
+import {QRCodeCanvas} from 'qrcode.react';
+import DigitalClock from './DigitalClock';
 
 function camelize(str) {
     return str
@@ -8,6 +10,10 @@ function camelize(str) {
         .map(word => word.toLowerCase()) // Convert each segment to lowercase
         .join('') // Join the segments back together
         .replace(/^./, str => str.toUpperCase()); // Capitalize the first letter
+}
+function capitalizeCity(city) {
+    if (!city) return ''; // Handle cases where city is undefined or null
+    return city.charAt(0).toUpperCase() + city.slice(1).toLowerCase();
 }
 
 const QuoteActivity = () => {
@@ -17,6 +23,7 @@ const QuoteActivity = () => {
     const [visitCount, setVisitCount] = useState({});
     const [stockCount, setStockCount] = useState({});
     const [employees, setEmployees] = useState([]);
+    const [phoneNumbers, setPhoneNumbers] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [refreshInterval, setRefreshInterval] = useState(20000);
     const [search,setSearch] = useState("")  
@@ -53,16 +60,22 @@ const QuoteActivity = () => {
                     // Process city data
                     const namesArray = data.result11.map(item => item["FormattedName"]);
                     const citiesArray = data.result11.map(item => item["City"]);
+                    const phoneNumbersArray = data.result11.map(item => item["Mobile"]); 
                     const cityMap = namesArray.reduce((acc, name, index) => {
                         acc[name] = citiesArray[index];
                         return acc;
                     }, {});
-                    setCityMapping(cityMap);
 
+                    const phoneMap = namesArray.reduce((acc, name, index) => {
+                        acc[name] = phoneNumbersArray[index];
+                        return acc;
+                    }, {});
+                    setCityMapping(cityMap);
+                    setPhoneNumbers(phoneMap)
                     setEmployees(namesArray);
                     setIsLoading(false);
 
-                    console.log({ countsObj, visitCountsObj, stockCountsObj, cityMap });
+                    console.log({ countsObj, visitCountsObj, stockCountsObj, cityMap,phoneMap });
                 })
                 .catch(error => console.error(error));
         };
@@ -126,41 +139,46 @@ const QuoteActivity = () => {
     },[employees, search, selectedFilter, counts, visitCount, stockCount, cityMapping])
 
     return (
-        <div>
-            <p className='records'>Total Records: {filteredData.length}</p>
-            <div className='filteredcheckboxes'>
-                <label>
-                    <input 
-                        type='checkbox'
-                        checked={selectedFilter === 'showNonZero'}
-                        onChange={() => setSelectedFilter('showNonZero')}
-                    />
-                    Show Non-Zero Counts
-                </label>
+        <div className='table-wrapper'>
+            <div className='fixed-container'>
+                <div className='clock-records'>
+                    <DigitalClock />
+                    <p className='records'>Count: {filteredData.length}</p>
+                </div>
+                <div className='filteredcheckboxes'>
+                    <label>
+                        <input 
+                            type='checkbox'
+                            checked={selectedFilter === 'showNonZero'}
+                            onChange={() => setSelectedFilter('showNonZero')}
+                        />
+                        Show Non-Zero Counts
+                    </label>
 
-                <label>
-                    <input 
-                        type='checkbox'
-                        checked={selectedFilter === 'showZero'}
-                        onChange={() => setSelectedFilter('showZero')}
-                    />
-                    Show Zero Counts
-                </label>
+                    <label>
+                        <input 
+                            type='checkbox'
+                            checked={selectedFilter === 'showZero'}
+                            onChange={() => setSelectedFilter('showZero')}
+                        />
+                        Show Zero Counts
+                    </label>
 
-                <label>
-                    <input 
-                        type='checkbox'
-                        checked={selectedFilter === 'showAll'}
-                        onChange={() => setSelectedFilter('showAll')}
-                    />
-                    Show All
-                </label>
+                    <label>
+                        <input 
+                            type='checkbox'
+                            checked={selectedFilter === 'showAll'}
+                            onChange={() => setSelectedFilter('showAll')}
+                        />
+                        Show All
+                    </label>
+                </div>
+                <div className='center'>
+                <input type='text' placeholder='Search...' className='search' onChange={(e) => setSearch(e.target.value)}/>
+                <button onClick={exportToExcel} className='excelbutton'>Export to Excel</button>
+                </div>
             </div>
-            <div className='center'>
-            <input type='text' placeholder='Search...' className='search' onChange={(e) => setSearch(e.target.value)}/>
-            <button onClick={exportToExcel} className='excelbutton'>Export to Excel</button>
-            </div>
-            <table>
+            <table className='table-container'>  
                 <thead>
                     <tr>
                         <th>Name of Champion</th>
@@ -168,12 +186,13 @@ const QuoteActivity = () => {
                         <th>Quotation Count</th>
                         <th>Visit Count</th>
                         <th>Stock Transfer Count</th>
+                        <th>Phone Number (QR Code)</th>
                     </tr>
                 </thead>
                 <tbody>
                     {isLoading ? (
                         <tr>
-                            <td className='heading' colSpan={5}>Loading...</td>
+                            <td className='heading' colSpan={6}>Loading...</td>
                         </tr>
                     ) : 
                         filteredData?.length > 0 ? (
@@ -192,21 +211,29 @@ const QuoteActivity = () => {
                             const count = counts[name] || 0;
                             const visitCountValue = visitCount[name] || 0;
                             const stockCountValue = stockCount[name] || 0;
-                            const city = cityMapping[name] || 'Unknown';
+                            const city = capitalizeCity(cityMapping[name]) || 'Unknown';
+                            const phoneNumber = phoneNumbers[name] || 'N/A';
                                 return (
                                     <tr key={index}>
-                                        <td>{camelize(name)}</td>
+                                        <td className='champion'>{camelize(name)}</td>
                                         <td>{city}</td>
                                         <td>{count}</td>
                                         <td>{visitCountValue}</td>
                                         <td>{stockCountValue}</td>
+                                        <td>
+                                        {phoneNumber !== 'N/A' ? (
+                                            <QRCodeCanvas value={`tel:${phoneNumber}`} size={50} /> 
+                                        ) : (
+                                            'N/A'
+                                        )}
+                                    </td>
                                     </tr>
                                 );
                             
                         })
                     ) : (
                         <tr>
-                            <td className="heading" colSpan={5}>
+                            <td className="heading" colSpan={6}>
                                 Nothing is here.
                             </td>
                         </tr>

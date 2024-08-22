@@ -13,7 +13,12 @@ table {
   thead {
     background: #2bb5ce;
     color: white;
-  }
+    top:270px;
+    position: sticky;
+    width: calc(100% - 20px);
+    z-index: 1003; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
   
   .heading {
     font-size: larger;
@@ -57,7 +62,7 @@ table {
 
 .records {
   text-align: center;
-  font-size: large;
+  font-size:x-large ;
   font-weight: 500;
 }
 
@@ -80,4 +85,48 @@ table {
 
 .filteredcheckboxes input[type= "checkbox"] {
   margin-right: 10px;
+}
+
+.clock {
+  font-size: 4rem;
+  text-align: center;
+}
+
+.fixed-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  z-index: 1008;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+  margin-top: 300px;
+  overflow-y: auto;
+}
+
+.champion {
+  text-transform: capitalize;
+}
+
+td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+@media (max-width: 1024px) {
+  thead {
+    top: 268px; 
+    width: calc(100% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  thead {
+    top: 268px; 
+    width: calc(100% - 20px);
+  }
 }
