@@ -4,6 +4,21 @@ const app = express();
 const port = process.env.PORT || 5000;
 const cors= require("cors");
 
+const allowedOrigins = ['https://crmroster.rptechindia.com', 'http://localhost:3000'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Set to true if your requests need to include credentials like cookies
+};
+
+app.use(cors(corsOptions));
+
 app.use(cors({ origin: 'https://crmroster.rptechindia.com' }));
 app.use(express.json());
 
