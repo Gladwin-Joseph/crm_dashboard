@@ -7,7 +7,7 @@ const VisitLastMonth = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchData = () => {
-      fetch("http://localhost:5000/api/userdata")
+      fetch("https://crm-dashboard-y946.onrender.com/api/userdata")
         .then((response) => response.json())
         .then((users) => {
           setUsers(users); // Set the users in your state

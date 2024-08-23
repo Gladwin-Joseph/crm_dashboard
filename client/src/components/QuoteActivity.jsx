@@ -31,7 +31,7 @@ const QuoteActivity = () => {
     const [selectedFilter,setSelectedFilter]= useState('showZero')
     useEffect(() => {
         const fetchData = () => {
-            fetch("http://localhost:5000/api/userdata")
+            fetch("https://crm-dashboard-y946.onrender.com/api/userdata")
                 .then(response => response.json())
                 .then(data => {
                     setData(data);

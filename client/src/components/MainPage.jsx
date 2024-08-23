@@ -5,7 +5,7 @@ const MainPage =  () => {
   const [data,setData]= useState(null);
   const [refreshInterval,setRefreshInterval] = useState(20000);
   useEffect(() => {
-   const fetchData= () => {fetch('http://localhost:5000/api/data') 
+   const fetchData= () => {fetch('https://crm-dashboard-y946.onrender.com/api/data') 
      .then(response => response.json())
      .then(data => setData(data))
      .catch(error => console.error(error))}
