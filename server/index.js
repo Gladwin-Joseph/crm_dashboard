@@ -18,7 +18,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(cors({ origin: 'https://crmroster.rptechindia.com' }));
 app.use(express.json());
 
 let tempDataStore = {};
