@@ -7,11 +7,18 @@ const cors= require("cors");
 const allowedOrigins = ['https://crmroster.rptechindia.com', 'http://localhost:3000','https://crm-frontend-y34d.onrender.com/','https://crm-dashboard-y946.onrender.com'];
 
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization',
   credentials: true
 };
+
 
 app.use(cors(corsOptions));
 
