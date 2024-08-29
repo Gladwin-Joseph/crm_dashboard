@@ -13,10 +13,10 @@ table {
   thead {
     background: #2bb5ce;
     color: white;
-    top:270px;
+    top:245px;
     position: sticky;
     width: calc(100% - 20px);
-    z-index: 1003; 
+    z-index: 1000; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
   
@@ -62,8 +62,8 @@ table {
 
 .records {
   text-align: center;
-  font-size:x-large ;
-  font-weight: 500;
+  font-size:2rem ;
+  font-weight:normal;
 }
 
 .filteredcheckboxes {
@@ -88,8 +88,10 @@ table {
 }
 
 .clock {
-  font-size: 4rem;
+  font-size: 2.5rem;
   text-align: center;
+  margin-right: 30px;
+  margin-top: 27px;
 }
 
 .fixed-container {
@@ -98,13 +100,13 @@ table {
   left: 0;
   width: 100%;
   background-color: white;
-  padding: 10px;
-  z-index: 1008;
+  padding: 15px;
+  z-index: 999;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .table-container {
-  margin-top: 300px;
+  margin-top: 268px;
   overflow-y: auto;
 }
 
@@ -115,6 +117,11 @@ table {
 td {
   text-align: center;
   vertical-align: middle;
+}
+.clock-records {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 @media (max-width: 1024px) {
