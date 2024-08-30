@@ -24,6 +24,7 @@ const QuoteActivity = () => {
     const [stockCount, setStockCount] = useState({});
     const [employees, setEmployees] = useState([]);
     const [phoneNumbers, setPhoneNumbers] = useState({});
+    const [emails,setEmails]= useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [refreshInterval, setRefreshInterval] = useState(20000);
     const [search,setSearch] = useState("")  
@@ -57,22 +58,35 @@ const QuoteActivity = () => {
                     }, {});
                     setStockCount(stockCountsObj);
 
-                    // Process city data
+                    // Process name data
                     const namesArray = data.result11.map(item => item["FormattedName"]);
+                    //Process city data
                     const citiesArray = data.result11.map(item => item["City"]);
-                    const phoneNumbersArray = data.result11.map(item => item["Mobile"]); 
+                    //Process emails data
+                    const emailsArray = data.result11.map(item => item["Email"]);
+                    //Process Phone Number data
+                    const phoneNumbersArray = data.result11.map(item => item["Mobile"]);
+                    //City Map 
                     const cityMap = namesArray.reduce((acc, name, index) => {
                         acc[name] = citiesArray[index];
                         return acc;
                     }, {});
-
+                    //Phone Map
                     const phoneMap = namesArray.reduce((acc, name, index) => {
                         acc[name] = phoneNumbersArray[index];
                         return acc;
                     }, {});
+                    //Email Map
+                    const emailMap = namesArray.reduce((acc, name, index) => {
+                        acc[name] = emailsArray[index];
+                        return acc;
+                    }, {});
                     setCityMapping(cityMap);
                     setPhoneNumbers(phoneMap)
-                    setEmployees(namesArray);
+                    //filtering employees based on emails
+                    const rpTechEmployees = namesArray.filter(name => emailMap[name]?.endsWith('@rptechindia.com'));
+                    setEmployees(rpTechEmployees);
+                    setEmails(emailMap);
                     setIsLoading(false);
 
                     console.log({ countsObj, visitCountsObj, stockCountsObj, cityMap,phoneMap });
@@ -143,50 +157,51 @@ const QuoteActivity = () => {
             <div className='fixed-container'>
                 <div className='clock-records'>
                     <DigitalClock />
+                    <p className='heading-text'>Champion Activity Dashboard</p>
                     <p className='records'>Count: {filteredData.length}</p>
                 </div>
-                <div className='filteredcheckboxes'>
-                    <label>
-                        <input 
-                            type='checkbox'
-                            checked={selectedFilter === 'showNonZero'}
-                            onChange={() => setSelectedFilter('showNonZero')}
-                        />
-                        Show Non-Zero Counts
-                    </label>
+                    <div className='center'>
+                        <input type='text' placeholder='Search...' className='search' onChange={(e) => setSearch(e.target.value)}/>
+                        <div className='filteredcheckboxes'>
+                            <label>
+                                <input 
+                                    type='checkbox'
+                                    checked={selectedFilter === 'showNonZero'}
+                                    onChange={() => setSelectedFilter('showNonZero')}
+                                />
+                                Non-Zero Counts
+                            </label>
 
-                    <label>
-                        <input 
-                            type='checkbox'
-                            checked={selectedFilter === 'showZero'}
-                            onChange={() => setSelectedFilter('showZero')}
-                        />
-                        Show Zero Counts
-                    </label>
+                            <label>
+                                <input 
+                                    type='checkbox'
+                                    checked={selectedFilter === 'showZero'}
+                                    onChange={() => setSelectedFilter('showZero')}
+                                />
+                                Zero Counts
+                            </label>
 
-                    <label>
-                        <input 
-                            type='checkbox'
-                            checked={selectedFilter === 'showAll'}
-                            onChange={() => setSelectedFilter('showAll')}
-                        />
-                        Show All
-                    </label>
-                </div>
-                <div className='center'>
-                <input type='text' placeholder='Search...' className='search' onChange={(e) => setSearch(e.target.value)}/>
-                <button onClick={exportToExcel} className='excelbutton'>Export to Excel</button>
-                </div>
+                            <label>
+                                <input 
+                                    type='checkbox'
+                                    checked={selectedFilter === 'showAll'}
+                                    onChange={() => setSelectedFilter('showAll')}
+                                />
+                                All
+                            </label>
+                        </div>
+                        <button onClick={exportToExcel} className='excelbutton'>Export to Excel</button>
+                    </div>
             </div>
             <table className='table-container'>  
                 <thead>
                     <tr>
-                        <th>Name of Champion</th>
+                        <th>Phone Number (QR Code)</th>
+                        <th>Name</th>
                         <th>City</th>
                         <th>Quotation Count</th>
                         <th>Visit Count</th>
                         <th>Stock Transfer Count</th>
-                        <th>Phone Number (QR Code)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -215,18 +230,18 @@ const QuoteActivity = () => {
                             const phoneNumber = phoneNumbers[name] || 'N/A';
                                 return (
                                     <tr key={index}>
-                                        <td className='champion'>{camelize(name)}</td>
-                                        <td>{city}</td>
-                                        <td>{count}</td>
-                                        <td>{visitCountValue}</td>
-                                        <td>{stockCountValue}</td>
                                         <td>
                                         {phoneNumber !== 'N/A' ? (
                                             <QRCodeCanvas value={`tel:${phoneNumber}`} size={50} /> 
                                         ) : (
                                             'N/A'
                                         )}
-                                    </td>
+                                      </td>
+                                        <td className='champion'>{camelize(name)}</td>
+                                        <td>{city}</td>
+                                        <td>{count}</td>
+                                        <td>{visitCountValue}</td>
+                                        <td>{stockCountValue}</td>
                                     </tr>
                                 );
                             
