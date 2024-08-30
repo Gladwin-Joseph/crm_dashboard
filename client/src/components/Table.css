@@ -100,7 +100,7 @@ table {
   left: 0;
   width: 100%;
   background-color: white;
-  padding: 15px;
+  padding: 18px;
   z-index: 999;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -131,9 +131,9 @@ td {
   }
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   thead {
-    top: 268px; 
+    top: 250px; 
     width: calc(100% - 20px);
   }
 }

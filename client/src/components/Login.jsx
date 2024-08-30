@@ -55,25 +55,25 @@ const Login = () => {
        <div className='form-container'>
         <div className='form-control'> 
           <img src={Image} className='image' alt="logo"/>
-          <form onSubmit={handleSubmit}>
-              <input type='number' placeholder='User Id' value={id} onChange={handleChange} />
-              <input type="email" placeholder='Enter Email' className='input' value={email} onChange={handleChange}/> 
-              <input type="password" placeholder='Enter Password' className='input' value={password} onChange={handleChange}/>
-              <label>
-                <select value={selectedRole} onChange={handleChange} id="role">
-                  <option value="">Please choose your Role</option>
-                  {roles.map((role) => (
-                    <option key={role} value={role}>
-                      {role}
-                    </option>
-                  ))}
-                </select>
-             </label>               
-              <button className='form-button' type='submit'>Sign In</button>
-          </form>
-            <p>
-              <a href="#" className='text1'>Forgot Password?</a>
-            </p>
+            <form onSubmit={handleSubmit}>
+                <input type='number' placeholder='User Id' value={id} onChange={handleChange} />
+                <input type="email" placeholder='Enter Email' className='input' value={email} onChange={handleChange}/> 
+                <input type="password" placeholder='Enter Password' className='input' value={password} onChange={handleChange}/>
+                <label>
+                  <select value={selectedRole} onChange={handleChange} id="role">
+                    <option value="">Please choose your Role</option>
+                    {roles.map((role) => (
+                      <option key={role} value={role}>
+                        {role}
+                      </option>
+                    ))}
+                  </select>
+              </label>               
+                <button className='form-button' type='submit'>Sign In</button>
+            </form>
+              <p>
+                <a href="#" className='text1'>Forgot Password?</a>
+              </p>
           </div>
        </div>
       </div>
