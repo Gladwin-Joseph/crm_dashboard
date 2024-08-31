@@ -27,7 +27,7 @@ const QuoteActivity = () => {
     const [emails,setEmails]= useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [refreshInterval, setRefreshInterval] = useState(20000);
-    const [search,setSearch] = useState("")  
+    const [search,setSearch] = useState("");  
     const [filteredData, setFilteredData] = useState([]);
     const [selectedFilter,setSelectedFilter]= useState('showZero')
     useEffect(() => {
@@ -84,7 +84,20 @@ const QuoteActivity = () => {
                     setCityMapping(cityMap);
                     setPhoneNumbers(phoneMap)
                     //filtering employees based on emails
-                    const rpTechEmployees = namesArray.filter(name => emailMap[name]?.endsWith('@rptechindia.com'));
+                    const rpTechEmployees = namesArray.filter(name => emailMap[name]?.endsWith('@rptechindia.com'))
+                    .sort((a,b) => {
+                        const nameA= a.toLowerCase();
+                        const nameB= b.toLowerCase();
+                        if(nameA < nameB) return -1;
+                        if(nameA >nameB) return 1;
+
+                        const cityA= (cityMap[a] || '').toLowerCase();
+                        const cityB= (cityMap[b] || '').toLowerCase();
+                        if(cityA < cityB) return -1;
+                        if(cityA > cityB) return 1;
+
+                        return 0;
+                    });
                     setEmployees(rpTechEmployees);
                     setEmails(emailMap);
                     setIsLoading(false);
@@ -196,7 +209,7 @@ const QuoteActivity = () => {
             <table className='table-container'>  
                 <thead>
                     <tr>
-                        <th>Phone Number (QR Code)</th>
+                        <th>Phone Number(QR Code)</th>
                         <th>Name</th>
                         <th>City</th>
                         <th>Quotation Count</th>

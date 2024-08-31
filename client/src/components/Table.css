@@ -14,7 +14,7 @@ table {
   thead {
     background: #2bb5ce;
     color: white;
-    top:200px;
+    top:178px;
     position: sticky;
     width: calc(100% - 20px);
     z-index: 1000; 
@@ -32,14 +32,20 @@ table {
   display: inline-block;
   margin-right: 25px;
   padding: 8px 12px;
+  transition: border-color 0.4s ease;
 }
+
+.search:focus {
+  border-color: #2fd1ee;
+  border-width: 2px;
+}
+
 .excelbutton {
-  background-color: #24a019;
+  background-color: #2cc21e;
   color:white;
   border: none;
   border-radius: 5px;
   font-weight:500;
-  box-shadow: 0px 2px 2px lightgray;
   text-transform: uppercase;
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   transition: 0.3s all ease-in-out;
@@ -72,7 +78,7 @@ table {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin: 26px 0;
+  margin: 15px 0;
   flex-wrap: nowrap;
 }
 
@@ -92,6 +98,7 @@ table {
   font-size: 1.7rem;
   text-align: center;
   margin-top: 25px;
+  font-weight: 500;
 }
 
 .fixed-container {
@@ -100,8 +107,9 @@ table {
   left: 0;
   width: 100%;
   padding: 2px;
-  background-color: white;
+  background-color: rgb(59, 164, 190);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: white;
 }
 
 .table-container {
