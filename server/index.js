@@ -102,13 +102,13 @@ app.get('/api/data', async (req, res) => {
       //quote released yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
       //visits last month
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${formattedFirstDay}T06:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${formattedLastDay}T23:00:00Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${formattedFirstDay}T06:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${formattedLastDay}T23:00:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits current month
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)a`,
       //visits yesterday
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //stock transfer monthly
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //stock transfer today
@@ -265,13 +265,13 @@ app.get('/api/userdata', async (req, res) =>{
       //quote released yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:58:00Z%27)and(ResultStatusCodeText ne 'Not Relevant')`,
       //visits last month
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${formattedFirstDay}T06:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${formattedLastDay}T23:00:00Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${formattedFirstDay}T06:00:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${formattedLastDay}T23:00:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits current month
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits yesterday
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)and(OwnerEmailURI%20eq%20%27${email}%27)`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //stock transfer monthly
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/LeadCollection/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(UserStatusCodeText%20eq%20%27Release%20SO%27)and(Z_KUT_ProcessType_KUTText%20eq%20%27Stock%20Transfer%20Request%27)and(SalesOrganisationID%20eq%20%27RPPL%27)`,
       //stock transfer today
