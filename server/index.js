@@ -42,7 +42,6 @@ app.get('/api/data', async (req, res) => {
   
   let id = tempDataStore.id;
   let password = tempDataStore.password;
-  let email= tempDataStore.email;
   let role= tempDataStore.selectedRole;
 
   try {
@@ -206,7 +205,6 @@ app.get('/api/data', async (req, res) => {
 app.get('/api/userdata', async (req, res) =>{
   let id = tempDataStore.id;
   let password = tempDataStore.password;
-  let email= tempDataStore.email;
   let role= tempDataStore.selectedRole;
 
   try {

@@ -8,19 +8,17 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const [id,setId]= useState('');
   const [password,setPassword]= useState('');
-  const [email,setEmail]= useState('');
   const [selectedRole, setSelectedRole] = useState('');
 
-  const roles = ['Champion', 'Admin/Director', 'Branch Head'];
+  const roles = ['Admin/Director', 'Branch Head'];
 
   const navigate= useNavigate();
 
   const handleChange = (e) => {
     if (e.target.type === "number") {
       setId(e.target.value);
-    } else if(e.target.type === "email"){
-        setEmail(e.target.value)
-    } else if(e.target.id === "role"){
+    }
+       else if(e.target.id === "role"){
       setSelectedRole(e.target.value)
     }
     else {
@@ -30,7 +28,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const credentials = { id, password,email,selectedRole };
+    const credentials = { id, password,selectedRole };
     console.log(credentials)
 
      axios.post("https://crm-dashboard-y946.onrender.com/formdata", credentials)
@@ -56,8 +54,7 @@ const Login = () => {
         <div className='form-control'> 
           <img src={Image} className='image' alt="logo"/>
             <form onSubmit={handleSubmit}>
-                <input type='number' placeholder='User Id' value={id} onChange={handleChange} />
-                <input type="email" placeholder='Enter Email' className='input' value={email} onChange={handleChange}/> 
+                <input type='number' placeholder='User Id' value={id} onChange={handleChange} /> 
                 <input type="password" placeholder='Enter Password' className='input' value={password} onChange={handleChange}/>
                 <label>
                   <select value={selectedRole} onChange={handleChange} id="role">

@@ -1,7 +1,7 @@
 .image {
     height: 90px;
     width: 220px;
-    margin-bottom: 130px;
+    margin-bottom: 90px;
 }
 
 .form-control {
@@ -23,7 +23,7 @@
     box-shadow: 0 1px 2px rgba(0,0,0,0.5);
     border-radius: 5px;
     margin-top: 179px;
-    margin-bottom: 188px;
+    margin-bottom: 280px;
 }
 
 .form-button {

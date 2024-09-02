@@ -3,6 +3,7 @@ import "./Table.css";
 import * as XLSX from 'xlsx';
 import {QRCodeCanvas} from 'qrcode.react';
 import DigitalClock from './DigitalClock';
+import QRCodeModal from './QrCodeModal';
 
 function camelize(str) {
     return str
@@ -30,6 +31,18 @@ const QuoteActivity = () => {
     const [search,setSearch] = useState("");  
     const [filteredData, setFilteredData] = useState([]);
     const [selectedFilter,setSelectedFilter]= useState('showZero')
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedQRCode,setSelectedQRCode] = useState(null);
+    
+    const handleQRCodeClick= (value) => {
+        setSelectedQRCode(value);
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedQRCode(null);
+    }
     useEffect(() => {
         const fetchData = () => {
             fetch("https://crm-dashboard-y946.onrender.com/api/userdata")
@@ -245,7 +258,7 @@ const QuoteActivity = () => {
                                     <tr key={index}>
                                         <td>
                                         {phoneNumber !== 'N/A' ? (
-                                            <QRCodeCanvas value={`tel:${phoneNumber}`} size={50} /> 
+                                            <QRCodeCanvas className='qr-codes' value={`tel:${phoneNumber}`} size={50} onClick={() => handleQRCodeClick(`tel:${phoneNumber}`)} /> 
                                         ) : (
                                             'N/A'
                                         )}
@@ -267,6 +280,11 @@ const QuoteActivity = () => {
                         </tr>
                     )}
                 </tbody>
+                <QRCodeModal 
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    qrCodeValue={selectedQRCode}
+                />
             </table>
         </div>
     );
