@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 import {QRCodeCanvas} from 'qrcode.react';
 import DigitalClock from './DigitalClock';
 import QRCodeModal from './QrCodeModal';
+import { AiOutlineTable, AiOutlineAppstore } from 'react-icons/ai';
 
 function camelize(str) {
     return str
@@ -33,6 +34,9 @@ const QuoteActivity = () => {
     const [selectedFilter,setSelectedFilter]= useState('showZero')
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedQRCode,setSelectedQRCode] = useState(null);
+    const [view,setView]= useState('table');
+    const [isTableView, setIsTableView] = useState(true);
+    const [showIcons, setShowIcons] = useState(true);
     
     const handleQRCodeClick= (value) => {
         setSelectedQRCode(value);
@@ -125,6 +129,20 @@ const QuoteActivity = () => {
         return () => clearInterval(interval);
     }, [refreshInterval]);
 
+    const handleScroll = () => {
+        if (window.scrollY > 5) {
+            setShowIcons(false);
+        } else {
+            setShowIcons(true);
+        }
+    };
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     const exportToExcel = () => {
         const dataToExport = employees
             .filter((name) => {
@@ -178,8 +196,30 @@ const QuoteActivity = () => {
         setFilteredData(filteredEmployees)
     },[employees, search, selectedFilter, counts, visitCount, stockCount, cityMapping])
 
+    const toggleView= (viewType) => {
+        setView(viewType);
+    };
+
     return (
         <div className='table-wrapper'>
+            {selectedFilter === 'showZero' && (
+                <div className="view-icons-container">
+                    <div
+                        className={`icon-container ${isTableView ? 'active' : ''}`}
+                        onClick={() => setIsTableView(true)}
+                    >
+                        <AiOutlineTable className="icon" />
+                    </div>
+                    <div className="separator"></div>
+                    <div
+                        className={`icon-container ${!isTableView ? 'active' : ''}`}
+                        onClick={() => setIsTableView(false)}
+                    >
+                        <AiOutlineAppstore className="icon" />
+                    </div>
+                </div>
+            )}
+        
             <div className='fixed-container'>
                 <div className='clock-records'>
                     <DigitalClock />
@@ -219,73 +259,93 @@ const QuoteActivity = () => {
                         <button onClick={exportToExcel} className='excelbutton'>Export to Excel</button>
                     </div>
             </div>
-            <table className='table-container'>  
-                <thead>
-                    <tr>
-                        <th>Phone Number(QR Code)</th>
-                        <th>Name</th>
-                        <th>City</th>
-                        <th>Quotation Count</th>
-                        <th>Visit Count</th>
-                        <th>Stock Transfer Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {isLoading ? (
-                        <tr>
-                            <td className='heading' colSpan={6}>Loading...</td>
-                        </tr>
-                    ) : 
-                        filteredData?.length > 0 ? (
-                        filteredData.filter((name) => {
-                            if (typeof search === 'string' && search.trim() !== '') {
-                                // Safely access and convert employee.name and employee.city to lowercase
-                                const employeeNameLower = name.toLowerCase();
-                                const employeeCityLower = cityMapping[name]?.toLowerCase();
-                                // Filter employees whose name or city matches the search term
-                                return employeeNameLower.includes(search.toLowerCase()) ||
-                                    employeeCityLower.includes(search.toLowerCase());
-                            }
-                            // If search term is empty or not a string, return all employees
-                            return true;
-                        }).map((name, index) => {
-                            const count = counts[name] || 0;
-                            const visitCountValue = visitCount[name] || 0;
-                            const stockCountValue = stockCount[name] || 0;
-                            const city = capitalizeCity(cityMapping[name]) || 'Unknown';
-                            const phoneNumber = phoneNumbers[name] || 'N/A';
-                                return (
-                                    <tr key={index}>
-                                        <td>
-                                        {phoneNumber !== 'N/A' ? (
-                                            <QRCodeCanvas className='qr-codes' value={`tel:${phoneNumber}`} size={50} onClick={() => handleQRCodeClick(`tel:${phoneNumber}`)} /> 
-                                        ) : (
-                                            'N/A'
-                                        )}
-                                      </td>
-                                        <td className='champion'>{camelize(name)}</td>
-                                        <td>{city}</td>
-                                        <td>{count}</td>
-                                        <td>{visitCountValue}</td>
-                                        <td>{stockCountValue}</td>
-                                    </tr>
-                                );
-                            
-                        })
-                    ) : (
-                        <tr>
-                            <td className="heading" colSpan={6}>
-                                Nothing is here.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-                <QRCodeModal 
-                    isOpen={isModalOpen}
-                    onClose={closeModal}
-                    qrCodeValue={selectedQRCode}
-                />
-            </table>
+
+
+            {isTableView || selectedFilter !== 'showZero' ? (
+                 <table className='table-container'>  
+                 <thead>
+                     <tr>
+                         <th>Phone Number(QR Code)</th>
+                         <th>Name</th>
+                         <th>City</th>
+                         <th>Quotation Count</th>
+                         <th>Visit Count</th>
+                         <th>Stock Transfer Count</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     {isLoading ? (
+                         <tr>
+                             <td className='heading' colSpan={6}>Loading...</td>
+                         </tr>
+                     ) : 
+                         filteredData?.length > 0 ? (
+                         filteredData.filter((name) => {
+                             if (typeof search === 'string' && search.trim() !== '') {
+                                 // Safely access and convert employee.name and employee.city to lowercase
+                                 const employeeNameLower = name.toLowerCase();
+                                 const employeeCityLower = cityMapping[name]?.toLowerCase();
+                                 // Filter employees whose name or city matches the search term
+                                 return employeeNameLower.includes(search.toLowerCase()) ||
+                                     employeeCityLower.includes(search.toLowerCase());
+                             }
+                             // If search term is empty or not a string, return all employees
+                             return true;
+                         }).map((name, index) => {
+                             const count = counts[name] || 0;
+                             const visitCountValue = visitCount[name] || 0;
+                             const stockCountValue = stockCount[name] || 0;
+                             const city = capitalizeCity(cityMapping[name]) || 'Unknown';
+                             const phoneNumber = phoneNumbers[name] || 'N/A';
+                                 return (
+                                     <tr key={index}>
+                                         <td>
+                                         {phoneNumber !== 'N/A' ? (
+                                             <QRCodeCanvas className='qr-codes' value={`tel:${phoneNumber}`} size={50} onClick={() => handleQRCodeClick(`tel:${phoneNumber}`)} /> 
+                                         ) : (
+                                             'N/A'
+                                         )}
+                                       </td>
+                                         <td className='champion'>{camelize(name)}</td>
+                                         <td>{city}</td>
+                                         <td>{count}</td>
+                                         <td>{visitCountValue}</td>
+                                         <td>{stockCountValue}</td>
+                                     </tr>
+                                 );
+                             
+                         })
+                     ) : (
+                         <tr>
+                             <td className="heading" colSpan={6}>
+                                 Nothing is here.
+                             </td>
+                         </tr>
+                     )}
+                 </tbody>
+                 <QRCodeModal 
+                     isOpen={isModalOpen}
+                     onClose={closeModal}
+                     qrCodeValue={selectedQRCode}
+                 />
+             </table>
+            ): (
+                <div className='grid-container'>
+                    {filteredData.map((name,index) => (
+                        <div key={index} className='grid-item'>
+                            <QRCodeCanvas className='qr-codes' value={`tel:${phoneNumbers[name]}`} size={100}   onClick={() => handleQRCodeClick(`tel:${phoneNumbers[name]}`)}/>
+                            <p>{camelize(name)}</p>
+                            <p>{capitalizeCity(cityMapping[name])}</p>
+                        </div>
+                    ))}
+                     <QRCodeModal 
+                     isOpen={isModalOpen}
+                     onClose={closeModal}
+                     qrCodeValue={selectedQRCode}
+                    />
+                </div>
+                
+            )}
         </div>
     );
 };

@@ -175,3 +175,70 @@ td {
 .qr-codes {
   cursor: pointer;
 }
+
+.view-icons-container {
+  position: fixed;
+  top: 190px;
+  right: 35px;
+  padding: 13px;
+  background-color: #f0f0f0; /* Default grey background */
+  border-radius: 10px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, opacity 0.5s ease-in-out;
+  z-index: 100;
+}
+
+.icon {
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  margin-top: 200px;
+  max-width: 1500px;
+  width: 100%;
+  margin-left: 180px;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.grid-item p {
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+icon-container {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.icon-container:hover {
+  transform: scale(1.3, 1.3);
+  transition: 0.3s all ease-in-out;
+}
+
+.separator {
+  width: 1px;
+  height: 30px;
+  background-color: #686868;
+}
