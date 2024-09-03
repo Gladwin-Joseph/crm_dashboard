@@ -202,10 +202,13 @@ td {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 10px;
   padding: 10px;
-  margin-top: 200px;
+  margin-top: 210px;
   max-width: 1500px;
   width: 100%;
   margin-left: 180px;
+  margin-right: auto;
+  margin-left: auto;
+  justify-content: center;
 }
 
 .grid-item {
@@ -241,4 +244,34 @@ icon-container {
   width: 1px;
   height: 30px;
   background-color: #686868;
+}
+
+@media screen and (max-width: 1650px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    padding: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .view-icons-container {
+    right: 15px;
+    top: 185px;
+    padding: 10px;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smooth transition */
+    opacity: 1; /* Fully visible */
+    visibility: visible; /* Ensures the element is interactive */
+  }
+
+  .view-icons-container.hidden {
+    opacity: 0; /* Fully hidden */
+    visibility: hidden; /* Element is not interactive */
+  }
+
+  .grid-item p {
+    margin-top: 10px;
+    font-size: 15px;
+  }
 }

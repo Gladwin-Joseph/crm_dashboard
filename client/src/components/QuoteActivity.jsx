@@ -130,10 +130,13 @@ const QuoteActivity = () => {
     }, [refreshInterval]);
 
     const handleScroll = () => {
-        if (window.scrollY > 5) {
-            setShowIcons(false);
-        } else {
-            setShowIcons(true);
+        if (window.innerWidth <= 1650) {
+            const iconContainer = document.querySelector('.view-icons-container');
+            if (window.scrollY > 2) {
+                iconContainer.classList.add('hidden');
+            } else {
+                iconContainer.classList.remove('hidden');
+            }
         }
     };
     useEffect(() => {
