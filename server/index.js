@@ -384,53 +384,6 @@ app.get('/api/userdata', async (req, res) =>{
   }
 })
 
-//individual count logic
-
-app.get('/individual-counts', async(req,res) => {
-  // Function to get the quote count for a specific day
-const getQuoteCountForDay = async (date) => {
-  const startDate = `${date}T00:00:00Z`;
-  const endDate = `${date}T23:59:59Z`;
-  const url = `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset'${startDate}')and(CreationDateTime%20le%20datetimeoffset'${endDate}')`;
-
-  try {
-      const response = await axios.get(url);
-      if (!response.ok) {
-          throw new Error(`Error fetching data for ${date}: ${response.statusText}`);
-      }
-      const count = await response.text(); // Assuming the count is returned as plain text
-      return { date, count: parseInt(count, 10) };  // Parsing count to a number
-  } catch (error) {
-      console.error(error);
-      return { date, count: 0 };  // Return 0 if there's an error
-  }
-};
-
-// Function to get quote counts for the last 30 days, including today
-const getQuoteCountsForLast30Days = async () => {
-  const today = new Date();
-  const counts = [];
-
-  // Loop through the last 30 days, including today
-  for (let i = 0; i < 30; i++) {
-      const pastDate = new Date(today);
-      pastDate.setDate(today.getDate() - i);  // Decrease date by i days
-      const dateStr = pastDate.toISOString().split('T')[0];  // Format as YYYY-MM-DD
-      const countData = await getQuoteCountForDay(dateStr);
-      counts.push(countData);
-  }
-
-  return counts.reverse();  // Reverse to get the earliest date first
-};
-
-  try {
-    const data= await getQuoteCountsForLast30Days();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({error: 'Error fetching data'});
-  }
-})
-
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
