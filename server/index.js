@@ -387,7 +387,25 @@ app.get('/api/userdata', async (req, res) =>{
 app.get('/individual-counts', async(req,res) => {
   let id = tempDataStore.id;
   let password = tempDataStore.password;
-  // Function to get the quote count for a specific day
+
+// Function to get quote counts for the last 30 days, including today
+const getQuoteCountsForLast30Days = async () => {
+  const today = new Date();
+  const counts = [];
+
+  // Loop through the last 30 days, including today
+  for (let i = 0; i < 30; i++) {
+      const pastDate = new Date(today);
+      pastDate.setDate(today.getDate() - i);  // Decrease date by i days
+      const dateStr = pastDate.toISOString().split('T')[0];  // Format as YYYY-MM-DD
+      const countData = await getQuoteCountForDay(dateStr);
+      console.log(dateStr)
+      counts.push(countData);
+  }
+
+  return counts.reverse();  // Reverse to get the earliest date first
+};
+// Function to get the quote count for a specific day
 const getQuoteCountForDay = async (date) => {
   const startDate = `${date}T00:00:00Z`;
   const endDate = `${date}T23:59:59Z`;
@@ -409,23 +427,6 @@ const getQuoteCountForDay = async (date) => {
       console.error(error);
       return { date, count: 0 };  // Return 0 if there's an error
   }
-};
-
-// Function to get quote counts for the last 30 days, including today
-const getQuoteCountsForLast30Days = async () => {
-  const today = new Date();
-  const counts = [];
-
-  // Loop through the last 30 days, including today
-  for (let i = 0; i < 30; i++) {
-      const pastDate = new Date(today);
-      pastDate.setDate(today.getDate() - i);  // Decrease date by i days
-      const dateStr = pastDate.toISOString().split('T')[0];  // Format as YYYY-MM-DD
-      const countData = await getQuoteCountForDay(dateStr);
-      counts.push(countData);
-  }
-
-  return counts.reverse();  // Reverse to get the earliest date first
 };
 
   try {
