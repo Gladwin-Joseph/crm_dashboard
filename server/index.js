@@ -385,6 +385,8 @@ app.get('/api/userdata', async (req, res) =>{
 //individual count logic
 
 app.get('/individual-counts', async(req,res) => {
+  let id = tempDataStore.id;
+  let password = tempDataStore.password;
   // Function to get the quote count for a specific day
 const getQuoteCountForDay = async (date) => {
   const startDate = `${date}T00:00:00Z`;
@@ -392,7 +394,12 @@ const getQuoteCountForDay = async (date) => {
   const url = `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${startDate}%27)and(CreationDateTime%20le%20datetimeoffset%27${endDate}%27)`;
 
   try {
-      const response = await axios.get(url);
+      const response = await axios.get(url,{
+        auth:{
+          username: id,
+          password: password
+        }
+      });
       if (!response.ok) {
           throw new Error(`Error fetching data for ${date}: ${response.statusText}`);
       }
