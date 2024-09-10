@@ -24,6 +24,7 @@
     border-radius: 5px;
     margin-top: 179px;
     margin-bottom: 280px;
+    font-family: 'Lexend', 'sans-serif';
 }
 
 .form-button {
@@ -60,6 +61,7 @@ input {
     box-sizing: border-box;
     padding: 10px;
     border-radius: 5px;
+    font-family: 'Lexend', 'sans-serif';
 }
 
 input::-webkit-outer-spin-button,
@@ -82,4 +84,5 @@ select {
     display: flex;
     margin-top: 15px;
     color: rgb(109, 109, 109);
+    font-family: 'Lexend', 'sans-serif';
 }

@@ -1,9 +1,11 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 table {
     border-collapse: collapse;
     max-width: 900px;
     width: 100%;
     margin: 1rem auto;
+    font-family: 'Manrope', 'sans-serif';
   }
   
   table th,
@@ -14,7 +16,7 @@ table {
   thead {
     background: #2bb5ce;
     color: white;
-    top:178px;
+    top:280px;
     position: sticky;
     width: calc(100% - 20px);
     z-index: 1000; 
@@ -25,14 +27,16 @@ table {
     font-size: larger;
   }
 
+
 .search {
+  position: absolute;
   font-size: 15px;
-  margin-top: 10px;
   width: 260px;
   display: inline-block;
-  margin-right: 25px;
   padding: 8px 12px;
   transition: border-color 0.4s ease;
+  margin-right: 500px ;
+  font-family: 'Lexend', 'sans-serif';
 }
 
 .search:focus {
@@ -40,58 +44,85 @@ table {
   border-width: 2px;
 }
 
+.clock-records {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  width: 100%;
+  padding: 6px 40px;
+  margin-top: -10px;
+  position: relative;
+  flex-direction: row;
+}
+
+.heading-text {
+  font-size: 25px; 
+  line-height: 48px; 
+  font-weight: 700; 
+  color: #171A1FFF;
+  font-family: 'Lexend', sans-serif; 
+}
+.sub-heading-text {
+  font-size: 20px;
+  line-height: 26px;
+  color: #171A1FFF;
+  font-family: 'Lexend', sans-serif;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.filtered-buttons {
+  display: flex;
+  gap: 10px;
+  margin-right: 90px;
+  margin-bottom: 170px;
+}
+
+.filtered-buttons button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-family: 'Lexend', sans-serif; 
+}
+
+.filtered-buttons button:hover {
+  background-color: #24b0c9;
+  color: white;
+}
+
+.filtered-buttons button.active {
+  background-color: #24b0c9;
+  color: white;
+}
+
 .excelbutton {
-  background-color: #2cc21e;
-  color:white;
+  color:black;
   border: none;
   border-radius: 5px;
   font-weight:500;
-  text-transform: uppercase;
-  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   transition: 0.3s all ease-in-out;
   cursor: pointer;
-  padding: 8px 12px;
-  margin-left: 60px;
+  padding: 10px 10px;
 }
 
 .excelbutton:hover {
-  transform: scale(1.1, 1.1);
+  background-color: #04b60a !important;
+  color: white !important;
 }
 
-.center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  width: 100%;
-  max-width: 100%;
-}
+@media screen and (max-width: 800px) {
+  .clock-records {
+    flex-direction: column;
+    align-items: flex-start; /* Aligns the content to the left on smaller screens */
+  }
 
-.records {
-  text-align: center;
-  font-size:1.5rem ;
-  font-weight: 500;
-}
-
-.filteredcheckboxes {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 15px 0;
-  flex-wrap: nowrap;
-}
-
-.filteredcheckboxes label {
-  display: flex;
-  align-items: center;
-  margin: 15px;
-  font-size: 16px;
-  white-space: nowrap;
-}
-
-.filteredcheckboxes input[type= "checkbox"] {
-  margin-right: 10px;
+  .filtered-buttons {
+    margin-top: 10px; /* Adds space between the heading and buttons on smaller screens */
+    align-self: flex-end; /* Aligns buttons to the right on smaller screens */
+  }
 }
 
 .clock {
@@ -106,17 +137,15 @@ table {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 2px;
-  background-color: rgb(59, 164, 190);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  color: white;
+  color: black;
+  background-color: white;
 }
 
 .table-container {
-  margin-top: 200px;
+  margin-top: 300px;
   overflow-y: auto;
 }
-
 .champion {
   text-transform: capitalize;
 }
@@ -127,14 +156,9 @@ td {
 }
 .clock-records {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
-  gap:100px;
-}
-.heading-text {
-  margin-top: 20px;
-  font-size: 2rem;
-  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .modal-overlay {
@@ -178,10 +202,10 @@ td {
 
 .view-icons-container {
   position: fixed;
-  top: 190px;
+  top: 170px;
   right: 35px;
   padding: 13px;
-  background-color: #f0f0f0; /* Default grey background */
+  background-color: #f0f0f0; 
   border-radius: 10px;
   display: flex;
   gap: 20px;
@@ -202,13 +226,15 @@ td {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 10px;
   padding: 10px;
-  margin-top: 210px;
+  margin-top: 280px;
   max-width: 1500px;
   width: 100%;
   margin-left: 180px;
   margin-right: auto;
   margin-left: auto;
   justify-content: center;
+  font-family: 'Manrope', 'sans-serif';
+  
 }
 
 .grid-item {
@@ -274,4 +300,57 @@ icon-container {
     margin-top: 10px;
     font-size: 15px;
   }
+}
+
+.net-amount-box {
+  background: #FFFFFFFF;
+  border: 1px solid #DEE1E6FF;
+  border-radius: 6px;
+  padding: 6px;
+  margin-top: 8px;
+  width: 200px; 
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 20px;
+}
+
+.box-heading {
+  font-size: 16px;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700; 
+  color: #323743FF;
+}
+
+.box-value {
+  font-size: 24px;
+  color: #24b0c9;
+  margin-left: 12px;
+  font-weight: 600; 
+  font-family: "Lexend", sans-serif;
+}
+
+.count-amount-box {
+  background: #FFFFFFFF;
+  border: 1px solid #DEE1E6FF;
+  border-radius: 6px;
+  padding: 6px;
+  margin-top: 8px;
+  width: 200px; 
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 20px;
+}
+
+.count-heading {
+  font-size: 15px;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700; 
+  color: #323743FF;
+}
+.count-value {
+  font-size: 24px;
+  color: #24b0c9;
+  margin-left: 12px;
+  font-weight: 600; 
+  font-family: "Lexend", sans-serif;
 }
