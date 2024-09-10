@@ -389,7 +389,7 @@ app.get('/individual-counts', async(req,res) => {
 const getQuoteCountForDay = async (date) => {
   const startDate = `${date}T00:00:00Z`;
   const endDate = `${date}T23:59:59Z`;
-  const url = `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset'${startDate}')and(CreationDateTime%20le%20datetimeoffset'${endDate}')`;
+  const url = `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${startDate}%27)and(CreationDateTime%20le%20datetimeoffset%27${endDate}%27)`;
 
   try {
       const response = await axios.get(url);
