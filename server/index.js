@@ -420,10 +420,28 @@ const getQuoteCountForDay = async (date) => {
   });
 
   const count= response.data;
-  return {date,count: parseInt(count,10)};
+  
+  //Parsing diferent formats of date for ui uses
+  const humanReadableData= new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+  return {
+    date,
+    formattedDate: humanReadableData,
+    count:parseInt(count,10)
+  };
  } catch (error) {
   console.error(`Error fetching data for ${date}:`, error.message);
-  return { date, count: 0 };  // Return 0 if there's an error
+  return {date,
+    formatedDate: new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }),
+    count:0
+  } ;  
  }
  }
 
