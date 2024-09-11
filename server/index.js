@@ -411,23 +411,21 @@ const getQuoteCountForDay = async (date) => {
   const endDate = `${date}T23:59:59Z`;
   const url = `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/SalesQuoteCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${startDate}%27)and(CreationDateTime%20le%20datetimeoffset%27${endDate}%27)`;
 
-  try {
-      const response = await axios.get(url,{
-        auth:{
-          username: id,
-          password: password
-        }
-      });
-      if (!response.ok) {
-          throw new Error(`Error fetching data for ${date}: ${response.statusText}`);
-      }
-      const count = await response.text(); // Assuming the count is returned as plain text
-      return { date, count: parseInt(count, 10) };  // Parsing count to a number
-  } catch (error) {
-      console.error(error);
-      return { date, count: 0 };  // Return 0 if there's an error
-  }
-};
+ try {
+  const response= await axios.get(url,{
+    auth: {
+      username:id,
+      password:password
+    }
+  });
+
+  const count= response.data;
+  return {date,count: parseInt(count,10)};
+ } catch (error) {
+  console.error(`Error fetching data for ${date}:`, error.message);
+  return { date, count: 0 };  // Return 0 if there's an error
+ }
+ }
 
   try {
     const data= await getQuoteCountsForLast30Days();
