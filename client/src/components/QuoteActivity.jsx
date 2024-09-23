@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import "./Table.css";
 import * as XLSX from 'xlsx';
 import {QRCodeCanvas} from 'qrcode.react';
+import axios from 'axios'
 import DigitalClock from './DigitalClock';
 import QRCodeModal from './QrCodeModal';
 import { AiOutlineTable, AiOutlineAppstore } from 'react-icons/ai';
 import { HashLoader } from 'react-spinners';
+
 
 function camelize(str) {
     return str
@@ -41,7 +43,8 @@ const QuoteActivity = () => {
     const [totalQuotationCount, setTotalQuotationCount] = useState(0);
     const [totalVisitCount, setTotalVisitCount] = useState(0);
     const [totalStockCount, setTotalStockCount] = useState(0);
-    
+    const [misapi,setMisApi] = useState([]);
+
     const handleQRCodeClick= (value) => {
         setSelectedQRCode(value);
         setIsModalOpen(true);
@@ -51,6 +54,33 @@ const QuoteActivity = () => {
         setIsModalOpen(false);
         setSelectedQRCode(null);
     }
+    const fetchDatafromMIS = () => {
+        const url= "https://misapi.rptechindia.com/api/Master/UserInfo";
+        const requestBody= {
+            token: "rpt",
+            userid: "",
+            id: "",
+            querytype: "1",
+            search: "",
+            active: ""
+        }
+
+        axios.post(url,requestBody)
+            .then(response => {
+                console.log(response.data);
+
+                setMisApi(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching data",error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
+    };
+    useEffect(() => {
+        fetchDatafromMIS();
+    },[]);
     useEffect(() => {
         const fetchData = () => {
             fetch("https://crm-dashboard-y946.onrender.com/api/userdata")
@@ -218,10 +248,6 @@ const QuoteActivity = () => {
         setFilteredData(filteredEmployees)
     },[employees, search, selectedFilter, counts, visitCount, stockCount, cityMapping])
 
-    const toggleView= (viewType) => {
-        setView(viewType);
-    };
-
     return (
         <div className='table-wrapper'>
             {isLoading ? (
@@ -269,8 +295,6 @@ const QuoteActivity = () => {
                             <p className="count-heading">Total Quote Count(Today)</p>
                             <p className="count-value">{totalQuotationCount}</p>
                         </div>
-
-
                         <div className="count-amount-box">
                             <p className="count-heading">Total Visit Count(Today)</p>
                             <p className="count-value">{totalVisitCount}</p>
@@ -313,7 +337,6 @@ const QuoteActivity = () => {
                     </div>
                 </div>
             </div>
-
 
             {isTableView || selectedFilter !== 'showZero' ? (
                  <table className='table-container'>  
@@ -362,6 +385,7 @@ const QuoteActivity = () => {
                             })
                         ) : (
                             <tr>
+                               
                                 <td className="heading" colSpan={6}>
                                     Nothing is here.
                                 </td>
