@@ -55,7 +55,7 @@ const QuoteActivity = () => {
         setSelectedQRCode(null);
     }
     const fetchDatafromMIS = () => {
-        const url= "https://misapi.rptechindia.com/api/Master/UserInfo";
+        const url= "https://crm-dashboard-y946.onrender.com/api/Master/UserInfo";
         const requestBody= {
             token: "rpt",
             userid: "",
@@ -73,9 +73,6 @@ const QuoteActivity = () => {
             })
             .catch(error => {
                 console.error("Error fetching data",error);
-            })
-            .finally(() => {
-                setIsLoading(false);
             })
     };
     useEffect(() => {
