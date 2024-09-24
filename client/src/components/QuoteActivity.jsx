@@ -55,7 +55,7 @@ const QuoteActivity = () => {
         setSelectedQRCode(null);
     }
     const fetchDatafromMIS = () => {
-        const url= "https://crm-dashboard-y946.onrender.com/api/Master/UserInfo";
+        const url= "https://crm-dashboard-y946.onrender.com/api/misinfo";
         const requestBody= {
             token: "rpt",
             userid: "",
@@ -65,7 +65,7 @@ const QuoteActivity = () => {
             active: ""
         }
 
-        axios.post(url,requestBody)
+         axios.post(url,requestBody)
             .then(response => {
                 console.log(response.data);
 

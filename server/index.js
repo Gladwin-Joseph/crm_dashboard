@@ -453,24 +453,17 @@ const getQuoteCountForDay = async (date) => {
   }
 })
 
-app.post('/api/misinfo', async (req, res) => {
-  const apiUrl = 'https://misapi.rptechindia.com/api/Master/UserInfo';
-  const body = req.body; // Get the request body sent from the frontend
+app.post('/api/misinfo', (req, res) => {
+  const requestBody = req.body;
 
-  try {
-      // Forward the request to the external API
-      const response = await axios.post(apiUrl, body, {
-          headers: {
-              'Content-Type': 'application/json',
-          },
+  axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', requestBody)
+      .then(response => {
+          res.json(response.data); // Send the response data back to the frontend
+      })
+      .catch(error => {
+          console.error('Error making API request:', error.message);
+          res.status(500).json({ error: 'Failed to fetch data' });
       });
-
-      // Send the response data back to the frontend
-      res.json(response.data);
-  } catch (error) {
-      console.error('Error forwarding request:', error.message);
-      res.status(500).json({ error: 'Error forwarding request' });
-  }
 });
 
 app.listen(port, () => {
