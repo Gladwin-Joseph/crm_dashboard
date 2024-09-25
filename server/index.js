@@ -453,7 +453,7 @@ const getQuoteCountForDay = async (date) => {
   }
 })
 
-app.post('/api/misinfo', (req, res) => {
+app.get('/api/misinfo', (req, res) => {
   const requestBody = req.body;
 
   axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', requestBody)
