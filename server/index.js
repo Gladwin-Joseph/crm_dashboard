@@ -461,7 +461,7 @@ app.post('/api/misinfo', (req, res) => {
           res.json(response.data); // Send the response data back to the frontend
       })
       .catch(error => {
-          console.error('Error making API request:', error.message);
+          console.error('Error making API request:', error.response ? error.response.data : error.message);
           res.status(500).json({ error: 'Failed to fetch data' });
       });
 });
