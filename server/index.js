@@ -454,16 +454,33 @@ const getQuoteCountForDay = async (date) => {
 })
 
 app.post('/api/misinfo', (req, res) => {
-  const requestBody = req.body;
+  const data = JSON.stringify({
+    token: "rpt",
+    userid: req.body.userid || "",
+    id: req.body.id || "",
+    querytype: req.body.querytype || "1",
+    search: req.body.search || "",
+    active: req.body.active || ""
+  });
 
-  axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', requestBody)
-      .then(response => {
-          res.json(response.data); // Send the response data back to the frontend
-      })
-      .catch(error => {
-          console.error('Error making API request:', error.response ? error.response.data : error.message);
-          res.status(500).json({ error: 'Failed to fetch data' });
-      });
+  const config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: 'https://misapi.rptechindia.com/api/Master/UserInfo',
+    headers: { 
+      'Content-Type': 'application/json'
+    },
+    data: data
+  };
+
+  axios.request(config)
+    .then((response) => {
+      res.json(response.data); // Send data back to the frontend
+    })
+    .catch((error) => {
+      console.error('Error fetching from MIS API:', error.message);
+      res.status(500).json({ error: 'Error fetching data from MIS API' });
+    });
 });
 
 app.listen(port, () => {
