@@ -43,7 +43,7 @@ const QuoteActivity = () => {
     const [totalQuotationCount, setTotalQuotationCount] = useState(0);
     const [totalVisitCount, setTotalVisitCount] = useState(0);
     const [totalStockCount, setTotalStockCount] = useState(0);
-    const [misapi,setMisApi] = useState([]);
+    const [misapi,setMisApi] = useState(null);
     const [error, setError] = useState(null);
 
     const handleQRCodeClick= (value) => {
@@ -55,20 +55,34 @@ const QuoteActivity = () => {
         setIsModalOpen(false);
         setSelectedQRCode(null);
     }
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-              const response = await axios.post('https://crm-dashboard-y946.onrender.com/api/mis-api');
-              setMisApi(response.data);
-              setIsLoading(false);
-            } catch (err) {
-              setError('An error occurred while fetching user info');
-              setIsLoading(false);
+    
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.post(
+          'https://misapi.rptechindia.com/api/Master/UserInfo',
+          {
+            token: "rpt",
+            querytype: "1"
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
             }
-          };
-      
-          fetchUserInfo();
-    },[]);
+          }
+        );
+        setMisApi(response.data);
+        console.log(misapi);
+        setIsLoading(false);
+      } catch (err) {
+        console.error('Error fetching user info:', err);
+        setError('An error occurred while fetching user info: ' + err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
     useEffect(() => {
         const fetchData = () => {
             fetch("https://crm-dashboard-y946.onrender.com/api/userdata")

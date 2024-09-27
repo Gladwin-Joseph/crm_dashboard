@@ -453,28 +453,6 @@ const getQuoteCountForDay = async (date) => {
   }
 })
 
-app.post('/api/mis-api', async (req, res) => {
-  try {
-    const response = await axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', {
-      token: "rpt",
-      querytype: "1"
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    
-    console.log('API Response:', response.data);
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error calling API:', error.message);
-    if (error.response) {
-      console.error('Response status:', error.response.status);
-      console.error('Response data:', error.response.data);
-    }
-    res.status(500).json({ error: 'An error occurred while calling the API', message: error.message, stack:error.stack });
-  }
-});
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
