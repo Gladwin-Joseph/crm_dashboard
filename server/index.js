@@ -455,17 +455,41 @@ const getQuoteCountForDay = async (date) => {
 
 app.post('/api/mis-api', async (req, res) => {
   try {
+    console.log('Received request to /api/mis-api');
     const response = await axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', {
       token: "rpt",
       querytype: "1"
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      timeout: 10000 // 10 seconds timeout
     });
+    console.log('Received response from external API:', response.data);
     res.json(response.data);
   } catch (error) {
-    console.error('Error:', error.message);
-    res.status(500).json({ error: 'An error occurred', details: error.message });
+    console.error('Error in /api/mis-api:', error.message);
+    if (axios.isAxiosError(error)) {
+      if (error.code === 'ECONNABORTED') {
+        console.error('The request timed out');
+        res.status(504).json({ error: 'Gateway Timeout', details: 'The request to the external API timed out' });
+      } else if (error.response) {
+        console.error('External API response status:', error.response.status);
+        console.error('External API response data:', error.response.data);
+        res.status(error.response.status).json({ error: 'External API Error', details: error.response.data });
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+        res.status(502).json({ error: 'Bad Gateway', details: 'No response received from the external API' });
+      } else {
+        console.error('Error setting up request:', error.message);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+      }
+    } else {
+      console.error('Non-Axios error:', error);
+      res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    }
   }
 });
-
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
