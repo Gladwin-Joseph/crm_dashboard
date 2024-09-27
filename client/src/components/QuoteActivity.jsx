@@ -56,33 +56,20 @@ const QuoteActivity = () => {
         setSelectedQRCode(null);
     }
     
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.post(
-          'https://misapi.rptechindia.com/api/Master/UserInfo',
-          {
-            token: "rpt",
-            querytype: "1"
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+          try {
+            const response = await axios.post('https://crm-dashboard-y946.onrender.com/api/mis-api');
+            setMisApi(response.data);
+          } catch (err) {
+            console.error('Error fetching user info:', err);
+            setError('An error occurred while fetching user info: ' + err.message);
+            setIsLoading(false);
           }
-        );
-        setMisApi(response.data);
-        console.log(misapi);
-        setIsLoading(false);
-      } catch (err) {
-        console.error('Error fetching user info:', err);
-        setError('An error occurred while fetching user info: ' + err.message);
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
+        };
+    
+        fetchUserInfo();
+      }, []);
     useEffect(() => {
         const fetchData = () => {
             fetch("https://crm-dashboard-y946.onrender.com/api/userdata")

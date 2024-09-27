@@ -453,6 +453,19 @@ const getQuoteCountForDay = async (date) => {
   }
 })
 
+app.post('/api/mis-api', async (req, res) => {
+  try {
+    const response = await axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', {
+      token: "rpt",
+      querytype: "1"
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'An error occurred', details: error.message });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
