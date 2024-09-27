@@ -456,11 +456,7 @@ const getQuoteCountForDay = async (date) => {
 app.post('/api/misinfo', (req, res) => {
   const data = JSON.stringify({
     token: "rpt",
-    userid: "",
-    id: "",
-    querytype:"1",
-    search: "",
-    active: ""
+    querytype:"1"
   });
 
   const config = {
