@@ -58,11 +58,7 @@ const QuoteActivity = () => {
         const url= "https://crm-dashboard-y946.onrender.com/api/misinfo";
         const requestBody= {
             token: "rpt",
-            userid: "",
-            id: "",
-            querytype: "1",
-            search: "",
-            active: ""
+            querytype: "1"
         }
 
          axios.post(url,requestBody)
