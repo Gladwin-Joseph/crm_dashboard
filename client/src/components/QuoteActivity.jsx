@@ -44,6 +44,7 @@ const QuoteActivity = () => {
     const [totalVisitCount, setTotalVisitCount] = useState(0);
     const [totalStockCount, setTotalStockCount] = useState(0);
     const [misapi,setMisApi] = useState([]);
+    const [error, setError] = useState(null);
 
     const handleQRCodeClick= (value) => {
         setSelectedQRCode(value);
@@ -54,25 +55,19 @@ const QuoteActivity = () => {
         setIsModalOpen(false);
         setSelectedQRCode(null);
     }
-    const fetchDatafromMIS = () => {
-        const url= "https://crm-dashboard-y946.onrender.com/api/misinfo";
-        const requestBody= {
-            token: "rpt",
-            querytype: "1"
-        }
-
-         axios.post(url,requestBody)
-            .then(response => {
-                console.log(response.data);
-
-                setMisApi(response.data);
-            })
-            .catch(error => {
-                console.error("Error fetching data",error);
-            })
-    };
     useEffect(() => {
-        fetchDatafromMIS();
+        const fetchUserInfo = async () => {
+            try {
+              const response = await axios.post('https://crm-dashboard-y946.onrender.com/api/mis-api');
+              setMisApi-(response.data);
+              setIsLoading(false);
+            } catch (err) {
+              setError('An error occurred while fetching user info');
+              setIsLoading(false);
+            }
+          };
+      
+          fetchUserInfo();
     },[]);
     useEffect(() => {
         const fetchData = () => {

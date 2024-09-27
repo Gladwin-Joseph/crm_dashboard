@@ -453,32 +453,28 @@ const getQuoteCountForDay = async (date) => {
   }
 })
 
-app.post('/api/misinfo', (req, res) => {
-  const data = JSON.stringify({
-    token: "rpt",
-    querytype:"1"
-  });
-
-  const config = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: 'https://misapi.rptechindia.com/api/Master/UserInfo',
-    headers: { 
-      'Content-Type': 'application/json'
-    },
-    data: data
-  };
-
-  axios.request(config)
-    .then((response) => {
-      res.json(response.data); // Send data back to the frontend
-    })
-    .catch((error) => {
-      console.error('Error fetching from MIS API:', error.message);
-      res.status(500).json({ error: 'Error fetching data from MIS API' });
+app.post('/api/mis-api', async (req, res) => {
+  try {
+    const response = await axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', {
+      token: "rpt",
+      querytype: "1"
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
     });
+    
+    console.log('API Response:', response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error calling API:', error.message);
+    if (error.response) {
+      console.error('Response status:', error.response.status);
+      console.error('Response data:', error.response.data);
+    }
+    res.status(500).json({ error: 'An error occurred while calling the API' });
+  }
 });
-
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
