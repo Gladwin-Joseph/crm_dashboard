@@ -472,7 +472,7 @@ app.post('/api/mis-api', async (req, res) => {
       console.error('Response status:', error.response.status);
       console.error('Response data:', error.response.data);
     }
-    res.status(500).json({ error: 'An error occurred while calling the API' });
+    res.status(500).json({ error: 'An error occurred while calling the API', message: error.message, stack:error.stack });
   }
 });
 app.listen(port, () => {
