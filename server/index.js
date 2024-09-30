@@ -358,6 +358,7 @@ app.get('/api/userdata', async (req, res) =>{
       result3: data[2].d.results,
       //stock monthly
       result4: data[7].d.results,
+      
       //stock today
       result5: data[8].d.results,
       //stock yesterday
@@ -463,7 +464,6 @@ app.post('/api/mis-api', async (req, res) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      timeout: 10000 // 10 seconds timeout
     });
     console.log('Received response from external API:', response.data);
     res.json(response.data);

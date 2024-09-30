@@ -64,7 +64,6 @@ const QuoteActivity = () => {
           } catch (err) {
             console.error('Error fetching user info:', err);
             setError('An error occurred while fetching user info: ' + err.message);
-            setIsLoading(false);
           }
         };
     
