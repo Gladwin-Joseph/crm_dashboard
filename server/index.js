@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const cors= require("cors");
 
-const allowedOrigins = ['https://crmroster.rptechindia.com', 'http://localhost:3000','https://crm-frontend-y34d.onrender.com','https://crm-dashboard-y946.onrender.com',"https://misapi.rptechindia.com/api/Master/UserInfo"];
+const allowedOrigins = ['https://crmroster.rptechindia.com', 'http://localhost:3000','https://crm-frontend-y34d.onrender.com','https://crm-dashboard-y946.onrender.com',"https://misapi.rptechindia.com/api/Master/UserInfo","https://crm-dashboard-y946.onrender.com/api/mis-api"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -453,18 +453,22 @@ const getQuoteCountForDay = async (date) => {
     res.status(500).json({error: 'Error fetching data'});
   }
 })
-
 app.post('/api/mis-api', async (req, res) => {
   try {
     console.log('Received request to /api/mis-api');
-    const response = await axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', {
+    
+    // Hardcoded request body for now; change this if you need dynamic values from the frontend
+    const requestBody = {
       token: "rpt",
       querytype: "1"
-    }, {
+    };
+
+    const response = await axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', requestBody, {
       headers: {
         'Content-Type': 'application/json'
       },
     });
+
     console.log('Received response from external API:', response.data);
     res.json(response.data);
   } catch (error) {
@@ -490,6 +494,7 @@ app.post('/api/mis-api', async (req, res) => {
     }
   }
 });
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
