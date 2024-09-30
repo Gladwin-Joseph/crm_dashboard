@@ -61,6 +61,7 @@ const QuoteActivity = () => {
           try {
             const response = await axios.post('https://crm-dashboard-y946.onrender.com/api/mis-api',{});
             setMisApi(response.data);
+            console.log(response.data)
           } catch (err) {
             console.error('Error fetching user info:', err);
             setError('An error occurred while fetching user info: ' + err.message);
