@@ -495,6 +495,9 @@ app.post('/api/mis-api', async (req, res) => {
   }
 });
 
+app.post('/api/mis-api1', (req, res) => {
+  res.json({ message: 'This route is working fine without external API call' });
+});
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
