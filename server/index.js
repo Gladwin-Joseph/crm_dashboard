@@ -1,8 +1,10 @@
 const express = require('express');
 const axios = require('axios');
+const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 5000;
 const cors= require("cors");
+const connectDB= require('./connect');
 
 const allowedOrigins = ['https://crmroster.rptechindia.com', 'http://localhost:3000','https://crm-frontend-y34d.onrender.com','https://crm-dashboard-y946.onrender.com',"https://misapi.rptechindia.com/api/Master/UserInfo","https://crm-dashboard-y946.onrender.com/api/mis-api"];
 
@@ -24,6 +26,17 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
 app.use(express.json());
+
+const start = async () => {
+  try {
+    await connectDB();
+    app.listen(port, () => {
+      console.log(`${port} Connected to db`);
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 let tempDataStore = {};
 
@@ -47,9 +60,8 @@ app.get('/api/data', async (req, res) => {
   try {
     let today = new Date().toISOString().slice(0, 10)
     //yesterday logic
-    let yesterday = new Date();  // Get today's date
-    yesterday.setDate(yesterday.getDate() - 1); // Subtract one day to get yesterday's date
-
+    let yesterday = new Date();  
+    yesterday.setDate(yesterday.getDate() - 1); 
     //Month logic
     let month = new Date();
     let mn = String(month.getMonth() + 1).padStart(2, '0');
@@ -453,51 +465,8 @@ const getQuoteCountForDay = async (date) => {
     res.status(500).json({error: 'Error fetching data'});
   }
 })
-app.post('/api/mis-api', async (req, res) => {
-  try {
-    console.log('Received request to /api/mis-api');
-    
-    // Hardcoded request body for now; change this if you need dynamic values from the frontend
-    const requestBody = {
-      token: "rpt",
-      querytype: "1"
-    };
 
-    const response = await axios.post('https://misapi.rptechindia.com/api/Master/UserInfo', requestBody, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    });
 
-    console.log('Received response from external API:', response.data);
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error in /api/mis-api:', error.message);
-    if (axios.isAxiosError(error)) {
-      if (error.code === 'ECONNABORTED') {
-        console.error('The request timed out');
-        res.status(504).json({ error: 'Gateway Timeout', details: 'The request to the external API timed out' });
-      } else if (error.response) {
-        console.error('External API response status:', error.response.status);
-        console.error('External API response data:', error.response.data);
-        res.status(error.response.status).json({ error: 'External API Error', details: error.response.data });
-      } else if (error.request) {
-        console.error('No response received:', error.request);
-        res.status(502).json({ error: 'Bad Gateway', details: 'No response received from the external API' });
-      } else {
-        console.error('Error setting up request:', error.message);
-        res.status(500).json({ error: 'Internal Server Error', details: error.message });
-      }
-    } else {
-      console.error('Non-Axios error:', error);
-      res.status(500).json({ error: 'Internal Server Error', details: error.message });
-    }
-  }
-});
-
-app.post('/api/mis-api1', (req, res) => {
-  res.json({ message: 'This route is working fine without external API call' });
-});
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
