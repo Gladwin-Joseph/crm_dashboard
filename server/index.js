@@ -1,12 +1,11 @@
 const express = require('express');
 const axios = require('axios');
-const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 5000;
 const cors= require("cors");
-const connectDB= require('./connect');
+const { createClient } = require('@supabase/supabase-js');
 
-const allowedOrigins = ['https://crmroster.rptechindia.com', 'http://localhost:3000','https://crm-frontend-y34d.onrender.com','https://crm-dashboard-y946.onrender.com',"https://misapi.rptechindia.com/api/Master/UserInfo","https://crm-dashboard-y946.onrender.com/api/mis-api"];
+const allowedOrigins = ['https://crmroster.rptechindia.com','https://misapi.rptechindia.com/api/Master/UserInfo', 'http://localhost:3000','http://localhost:5000','https://crm-frontend-y34d.onrender.com','https://crm-dashboard-y946.onrender.com',"https://misapi.rptechindia.com/api/Master/UserInfo","https://crm-dashboard-y946.onrender.com/api/mis-api"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -19,24 +18,35 @@ const corsOptions = {
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization',
 };
-
+const supabaseUrl = 'https://xvelrpogedzmrvujrjxh.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2ZWxycG9nZWR6bXJ2dWpyanhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5MzMzNzAsImV4cCI6MjA0MzUwOTM3MH0.s24J6XeyK6vU7DYON7xULeWuctbPGzVxFHlKgE1OcFU';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(cors(corsOptions));
 
 app.options('*', cors(corsOptions));
 
-app.use(express.json());
-
-const start = async () => {
+app.get('/api/emp_pics', async (req, res) => {
   try {
-    await connectDB();
-    app.listen(port, () => {
-      console.log(`${port} Connected to db`);
-    })
-  } catch (error) {
-    console.log(error);
+    // Fetch data from Supabase
+    const { data, error } = await supabase
+      .from('emp_pics') // Replace with your table name
+      .select('*'); // Select all columns
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    // Send the data as a response
+    res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-}
+});
+
+
+
 
 let tempDataStore = {};
 

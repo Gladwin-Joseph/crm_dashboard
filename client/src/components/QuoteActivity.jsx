@@ -7,7 +7,7 @@ import DigitalClock from './DigitalClock';
 import QRCodeModal from './QrCodeModal';
 import { AiOutlineTable, AiOutlineAppstore } from 'react-icons/ai';
 import { HashLoader } from 'react-spinners';
-
+import {supabase} from '../supabaseClient'
 
 function camelize(str) {
     return str
@@ -43,8 +43,9 @@ const QuoteActivity = () => {
     const [totalQuotationCount, setTotalQuotationCount] = useState(0);
     const [totalVisitCount, setTotalVisitCount] = useState(0);
     const [totalStockCount, setTotalStockCount] = useState(0);
-    const [misapi,setMisApi] = useState(null);
     const [error, setError] = useState(null);
+    const [gridData, setGridData] = useState([]);
+    const [emailId, setEmailId] = useState('');
 
     const handleQRCodeClick= (value) => {
         setSelectedQRCode(value);
@@ -55,21 +56,31 @@ const QuoteActivity = () => {
         setIsModalOpen(false);
         setSelectedQRCode(null);
     }
-    
+    useEffect (() => {
+        const fetchEmailId= async () => {
+            const {data: {emp_pics}}= await supabase.auth.getUser();
+            setEmailId(emp_pics.Email_Address)
+            console.log('Fetched Email ID:', emp_pics.Email_Address);
+        }
+        fetchEmailId();
+    },[])
     useEffect(() => {
-        const fetchUserInfo = async () => {
-          try {
-            const response = await axios.post('https://crm-dashboard-y946.onrender.com/api/mis-api',{});
-            setMisApi(response.data);
-            console.log(response.data)
-          } catch (err) {
-            console.error('Error fetching user info:', err);
-            setError('An error occurred while fetching user info: ' + err.message);
-          }
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://crm-dashboard-y946.onrender.com/api/userdata');
+                console.log('API Response:', response.data); // Log the complete API response
+                const filteredData = response.data.filter(item => item.OwnerEmailURI === emailId);
+                console.log('Filtered Data:', filteredData); // Log the filtered data based on email ID
+                setGridData(filteredData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         };
-    
-        fetchUserInfo();
-      }, []);
+
+        if (emailId) {
+            fetchData();
+        }
+    }, [emailId]);
     useEffect(() => {
         const fetchData = () => {
             fetch("https://crm-dashboard-y946.onrender.com/api/userdata")
