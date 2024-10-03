@@ -5,7 +5,7 @@ const port = process.env.PORT || 5000;
 const cors= require("cors");
 const { createClient } = require('@supabase/supabase-js');
 
-const allowedOrigins = ['https://crmroster.rptechindia.com','https://misapi.rptechindia.com/api/Master/UserInfo', 'http://localhost:3000','http://localhost:5000','https://crm-frontend-y34d.onrender.com','https://crm-dashboard-y946.onrender.com',"https://misapi.rptechindia.com/api/Master/UserInfo","https://crm-dashboard-y946.onrender.com/api/mis-api"];
+const allowedOrigins = ['https://crmroster.rptechindia.com','https://misapi.rptechindia.com/api/Master/UserInfo', 'http://localhost:3000','http://localhost:5000','https://crm-frontend-y34d.onrender.com','https://crm-dashboard-y946.onrender.com',"https://misapi.rptechindia.com/api/Master/UserInfo"];
 
 const corsOptions = {
   origin: function (origin, callback) {
