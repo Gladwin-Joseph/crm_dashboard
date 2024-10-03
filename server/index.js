@@ -10,8 +10,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'https://crm-frontend-y34d.onrender.com',
   'https://crm-dashboard-y946.onrender.com',
-  "https://misapi.rptechindia.com/api/Master/UserInfo",
-  "https://crm-dashboard-y946.onrender.com/api/mis-api"
+  "https://crm-dashboard-y946.onrender.com/api/mis-api",
+  "https://crm-dashboard-y946.onrender.com/api/userdata"
 ];
 
 const corsOptions = {
