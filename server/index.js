@@ -5,11 +5,18 @@ const port = process.env.PORT || 5000;
 const cors= require("cors");
 const { createClient } = require('@supabase/supabase-js');
 
-const allowedOrigins = ['https://crmroster.rptechindia.com', 'http://localhost:3000','https://crm-frontend-y34d.onrender.com','https://crm-dashboard-y946.onrender.com',"https://misapi.rptechindia.com/api/Master/UserInfo","https://crm-dashboard-y946.onrender.com/api/mis-api"];
-
+const allowedOrigins = [
+  'https://crmroster.rptechindia.com',
+  'http://localhost:3000',
+  'https://crm-frontend-y34d.onrender.com',
+  'https://crm-dashboard-y946.onrender.com',
+  "https://misapi.rptechindia.com/api/Master/UserInfo",
+  "https://crm-dashboard-y946.onrender.com/api/mis-api"
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
+      // Allow all origins if origin is not specified (e.g., when testing locally)
       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
           callback(null, true);
       } else {
@@ -19,13 +26,14 @@ const corsOptions = {
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization',
 };
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions));
+
 const supabaseUrl = 'https://xvelrpogedzmrvujrjxh.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2ZWxycG9nZWR6bXJ2dWpyanhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5MzMzNzAsImV4cCI6MjA0MzUwOTM3MH0.s24J6XeyK6vU7DYON7xULeWuctbPGzVxFHlKgE1OcFU';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-app.use(cors(corsOptions));
-
-app.options('*', cors(corsOptions));
 
 app.get('/api/emp_pics', async (req, res) => {
   try {
