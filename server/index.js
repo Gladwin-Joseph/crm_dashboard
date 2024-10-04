@@ -7,9 +7,12 @@ const { createClient } = require('@supabase/supabase-js');
 
 app.use(cors());
 
-app.options('*', cors());
-
-
+const corsOptions = {
+  origin: ['https://crmroster.rptechindia.com', 'https://crm-frontend-y34d.onrender.com'],
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type,Authorization',
+};
+app.options('*', cors(corsOptions));
 
 let tempDataStore = {};
 
