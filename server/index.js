@@ -8,10 +8,8 @@ const { createClient } = require('@supabase/supabase-js');
 const allowedOrigins = [
   'https://crmroster.rptechindia.com',
   'http://localhost:3000',
-  'https://crm-frontend-y34d.onrender.com',
-  'https://crm-dashboard-y946.onrender.com',
-  "https://crm-dashboard-y946.onrender.com/api/mis-api",
-  "https://crm-dashboard-y946.onrender.com/api/userdata"
+  "https://crm-frontend-y34d.onrender.com",
+  "https://crm-dashboard-y946.onrender.com",
 ];
 
 const corsOptions = {
