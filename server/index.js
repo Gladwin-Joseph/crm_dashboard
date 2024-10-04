@@ -59,18 +59,18 @@ app.get('/api/emp_pics', async (req, res) => {
 
 let tempDataStore = {};
 
-app.post('/formdata',(req,res) => {
+app.post('/formdata', cors(corsOptions),(req,res) => {
   console.log(req.body)
   tempDataStore= req.body
   res.json({message: 'Logged in'})
 })
 
-app.get('/api/formdata',(req,res) => {
+app.get('/api/formdata', cors(corsOptions),(req,res) => {
   res.json(tempDataStore)
 })
 
 
-app.get('/api/data', async (req, res) => {
+app.get('/api/data', cors(corsOptions), async (req, res) => {
   
   let id = tempDataStore.id;
   let password = tempDataStore.password;
