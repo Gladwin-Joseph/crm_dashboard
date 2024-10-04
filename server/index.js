@@ -8,7 +8,7 @@ const { createClient } = require('@supabase/supabase-js');
 app.use(cors());
 
 const corsOptions = {
-  origin: ['https://crmroster.rptechindia.com', 'https://crm-frontend-y34d.onrender.com'],
+  origin: ['https://crmroster.rptechindia.com', 'https://crm-frontend-y34d.onrender.com',"https://crm-dashboard-dipf.onrender.com"],
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization',
 };

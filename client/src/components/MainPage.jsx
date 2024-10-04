@@ -5,7 +5,7 @@ const MainPage =  () => {
   const [data,setData]= useState(null);
   const [refreshInterval,setRefreshInterval] = useState(20000);
   useEffect(() => {
-   const fetchData= () => {fetch('https://crm-dashboard-y946.onrender.com/api/data') 
+   const fetchData= () => {fetch('https://crm-dashboard-dipf.onrender.com/api/data') 
      .then(response => response.json())
      .then(data => setData(data))
      .catch(error => console.error('Error:',error))}
@@ -13,7 +13,7 @@ const MainPage =  () => {
      
      const interval= setInterval(fetchData,refreshInterval);
 
-     return() => clearInterval(interval)
+     return() => clearInterval(interval)      
   }, [refreshInterval]);    
 
   

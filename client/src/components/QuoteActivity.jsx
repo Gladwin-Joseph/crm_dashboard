@@ -58,7 +58,7 @@ const QuoteActivity = () => {
     }
     useEffect(() => {
         const fetchData = () => {
-            fetch("https://crm-dashboard-y946.onrender.com/api/userdata")
+            fetch("https://crm-dashboard-dipf.onrender.com/api/userdata")
                 .then(response => response.json())
                 .then(data => {
                     setData(data);
