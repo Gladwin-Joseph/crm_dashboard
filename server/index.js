@@ -5,28 +5,9 @@ const port = process.env.PORT || 5000;
 const cors= require("cors");
 const { createClient } = require('@supabase/supabase-js');
 
-const allowedOrigins = [
-  'https://crmroster.rptechindia.com',
-  'http://localhost:3000',
-  "https://crm-frontend-y34d.onrender.com",
-  "https://crm-dashboard-y946.onrender.com",
-];
+app.use(cors());
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    console.log(`Origin: ${origin}`);  // Add this line to debug
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
-  allowedHeaders: 'Content-Type,Authorization',
-};
-app.use(cors(corsOptions));
-
-app.options('*', cors(corsOptions));
+app.options('*', cors());
 
 const supabaseUrl = 'https://xvelrpogedzmrvujrjxh.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2ZWxycG9nZWR6bXJ2dWpyanhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5MzMzNzAsImV4cCI6MjA0MzUwOTM3MH0.s24J6XeyK6vU7DYON7xULeWuctbPGzVxFHlKgE1OcFU';
