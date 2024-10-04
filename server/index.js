@@ -9,31 +9,6 @@ app.use(cors());
 
 app.options('*', cors());
 
-const supabaseUrl = 'https://xvelrpogedzmrvujrjxh.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2ZWxycG9nZWR6bXJ2dWpyanhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5MzMzNzAsImV4cCI6MjA0MzUwOTM3MH0.s24J6XeyK6vU7DYON7xULeWuctbPGzVxFHlKgE1OcFU';
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-
-app.get('/api/emp_pics', async (req, res) => {
-  try {
-    // Fetch data from Supabase
-    const { data, error } = await supabase
-      .from('emp_pics') // Replace with your table name
-      .select('*'); // Select all columns
-
-    if (error) {
-      return res.status(400).json({ error: error.message });
-    }
-
-    // Send the data as a response
-    res.status(200).json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-
 
 
 let tempDataStore = {};
