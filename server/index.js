@@ -15,6 +15,15 @@ app.options('*', cors(corsOptions));
 
 let tempDataStore = {};
 
+app.get('/api/data1', async (req, res) => {
+  try {
+    // Your logic here
+    res.json({ message: 'Success!' });
+  } catch (error) {
+    console.error('Error fetching data:', error); // Log the error to the console
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
+});
 app.post('/formdata', (req,res) => {
   console.log(req.body)
   tempDataStore= req.body
