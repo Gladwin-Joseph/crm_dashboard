@@ -87,7 +87,13 @@ app.get('/api/data', async (req, res) => {
       hour12: false,
       timeZone: 'Asia/Kolkata'
   });
-
+  console.log(mn);
+  console.log(today)
+  console.log(yesterday1)
+  console.log(formattedFirstDay)
+  console.log(firstDayOfPreviousMonth)
+  console.log(formattedLastDay)
+  console.log(lastDayOfPreviousMonth)
   // Get the formatted time string
   const localizedTime = formatter.format(currentDate);
     const urls= [
