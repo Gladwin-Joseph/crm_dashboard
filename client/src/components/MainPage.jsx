@@ -4,18 +4,24 @@ import { Link } from 'react-router-dom';
 const MainPage =  () => {
   const [data,setData]= useState(null);
   const [refreshInterval,setRefreshInterval] = useState(20000);
+  
   useEffect(() => {
-   const fetchData= () => {fetch('https://crm-dashboard-dipf.onrender.com/api/data') 
-     .then(response => response.json())
-     .then(data => setData(data))
-     .catch(error => console.error('Error:',error))}
-     fetchData();
-     
-     const interval= setInterval(fetchData,refreshInterval);
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://crm-dashboard-dipf.onrender.com/api/data');
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-     return() => clearInterval(interval)      
-  }, [refreshInterval]);    
+    fetchData(); // Initial fetch
 
+    const interval = setInterval(fetchData, refreshInterval); // Set interval for refresh
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, [refreshInterval]);
   
   return (
     <div className="main-page">
