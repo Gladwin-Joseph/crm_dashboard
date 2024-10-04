@@ -14,12 +14,12 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-      // Allow all origins if origin is not specified (e.g., when testing locally)
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-          callback(null, true);
-      } else {
-          callback(new Error('Not allowed by CORS'));
-      }
+    console.log(`Origin: ${origin}`);  // Add this line to debug
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
   },
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization',
