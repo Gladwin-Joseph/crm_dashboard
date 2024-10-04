@@ -193,9 +193,7 @@ app.get('/api/data', cors(corsOptions), async (req, res) => {
     ]
 
     let preprocessedUrls;
-    if (id.startsWith("2000")) {
-      preprocessedUrls= alturls
-    } else if(role === "Branch Head") {
+    if(role === "Branch Head") {
       preprocessedUrls=urls1
     } 
     else {
@@ -360,9 +358,7 @@ app.get('/api/userdata', async (req, res) =>{
     ]
 
     let preprocessedUrls;
-    if (id.startsWith("2000")) {
-      preprocessedUrls= alturls
-    } else if(role === "Branch Head") {
+    if(role === "Branch Head") {
       preprocessedUrls=urls1
     } 
     else {
