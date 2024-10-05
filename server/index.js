@@ -166,7 +166,9 @@ app.get('/api/data', async (req, res) => {
     ]
 
     let preprocessedUrls;
-    if(role === "Branch Head") {
+    if (id.startsWith("2000")) {
+      preprocessedUrls= alturls
+    } else if(role === "Branch Head") {
       preprocessedUrls=urls1
     } 
     else {
@@ -331,7 +333,9 @@ app.get('/api/userdata', async (req, res) =>{
     ]
 
     let preprocessedUrls;
-    if(role === "Branch Head") {
+    if (id.startsWith("2000")) {
+      preprocessedUrls= alturls
+    } else if(role === "Branch Head") {
       preprocessedUrls=urls1
     } 
     else {
