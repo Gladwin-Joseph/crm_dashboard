@@ -12,7 +12,7 @@ const corsOptions = {
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
 };
 app.options('*', cors(corsOptions));
-
+app.use(express.json());
 
 app.get('/api/data1', async (req, res) => {
   try {
