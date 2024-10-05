@@ -13,16 +13,30 @@ const corsOptions = {
 };
 app.options('*', cors(corsOptions));
 app.use(express.json());
+const supabaseUrl = 'https://xvelrpogedzmrvujrjxh.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2ZWxycG9nZWR6bXJ2dWpyanhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5MzMzNzAsImV4cCI6MjA0MzUwOTM3MH0.s24J6XeyK6vU7DYON7xULeWuctbPGzVxFHlKgE1OcFU';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-app.get('/api/data1', async (req, res) => {
+
+app.get('/api/emp_pics', async (req, res) => {
   try {
-    // Your logic here
-    res.json({ message: 'Success!' });
-  } catch (error) {
-    console.error('Error fetching data:', error); // Log the error to the console
-    res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    // Fetch data from Supabase
+    const { data, error } = await supabase
+      .from('emp_pics') // Replace with your table name
+      .select('*'); // Select all columns
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    // Send the data as a response
+    res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 let tempDataStore = {};
 app.post('/formdata', (req,res) => {
   console.log(req.body)
