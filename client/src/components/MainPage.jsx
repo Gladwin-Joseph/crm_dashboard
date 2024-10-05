@@ -8,8 +8,9 @@ const MainPage =  () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://crm-dashboard-dipf.onrender.com/api/data');
+        const response = await fetch('http://localhost:5000/api/data');
         const result = await response.json();
+        console.log(result);
         setData(result);
       } catch (error) {
         console.error('Error fetching data:', error);
