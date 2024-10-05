@@ -108,7 +108,7 @@ app.get('/api/data', async (req, res) => {
       //visits current month
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%272024-${mn}-01T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T${localizedTime}Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits today
-      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)a`,
+      `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${today}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${today}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //visits yesterday
       `https://my362233.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi/VisitCollection/$count/?$filter=(CreationDateTime%20ge%20datetimeoffset%27${yesterday1}T00:05:00Z%27)and(CreationDateTime%20le%20datetimeoffset%27${yesterday1}T23:55:00Z%27)and(StatusText%20eq%20%27Completed%27)`,
       //stock transfer monthly
