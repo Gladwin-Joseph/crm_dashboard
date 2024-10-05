@@ -9,7 +9,7 @@ const MainPage =  () => {
     const fetchData = async () => {
       try {
         const response = await fetch('https://crm-dashboard-dipf.onrender.com/api/data');
-        const result = await response.json();
+        const result = response.json();
         console.log(result);
         setData(result);
       } catch (error) {
