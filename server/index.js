@@ -12,8 +12,7 @@ const corsOptions = {
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
 };
 app.options('*', cors(corsOptions));
-
-let tempDataStore = {};
+app.use(express.json());
 
 app.get('/api/data1', async (req, res) => {
   try {
@@ -24,6 +23,7 @@ app.get('/api/data1', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
 });
+let tempDataStore = {};
 app.post('/formdata', (req,res) => {
   console.log(req.body)
   tempDataStore= req.body
