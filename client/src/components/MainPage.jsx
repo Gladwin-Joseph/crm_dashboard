@@ -6,23 +6,16 @@ const MainPage =  () => {
   const [refreshInterval,setRefreshInterval] = useState(20000);
   
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://crm-dashboard-dipf.onrender.com/api/data');
-        const result = response.json();
-        console.log(result);
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData(); // Initial fetch
-
-    const interval = setInterval(fetchData, refreshInterval); // Set interval for refresh
-
-    return () => clearInterval(interval); // Cleanup interval on unmount
-  }, [refreshInterval]);
+    const fetchData= () => {fetch('https://crm-dashboard-dipf.onrender.com/api/data') 
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error(error))}
+      fetchData();
+ 
+      const interval= setInterval(fetchData,refreshInterval);
+ 
+      return() => clearInterval(interval)
+   }, [refreshInterval]);   
   
   return (
     <div className="main-page">
