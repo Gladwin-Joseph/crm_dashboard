@@ -56,6 +56,32 @@ const QuoteActivity = () => {
         setIsModalOpen(false);
         setSelectedQRCode(null);
     }
+
+    useEffect (() => {
+        const fetchEmailId= async () => {
+            const {data: {emp_pics}}= await supabase.auth.getUser();
+            setEmailId(emp_pics.Email_Address)
+            console.log('Fetched Email ID:', emp_pics.Email_Address);
+        }
+        fetchEmailId();
+    },[])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://crm-dashboard-y946.onrender.com/api/userdata');
+                console.log('API Response:', response.data); // Log the complete API response
+                const filteredData = response.data.filter(item => item["OwnerEmailURI"] === emailId);
+                console.log('Filtered Data:', filteredData); // Log the filtered data based on email ID
+                setGridData(filteredData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        if (emailId) {
+            fetchData();
+        }
+    }, [emailId]);
     useEffect(() => {
         const fetchData = () => {
             fetch("https://crm-dashboard-dipf.onrender.com/api/userdata")
