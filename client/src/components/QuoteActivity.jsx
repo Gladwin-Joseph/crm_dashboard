@@ -3,11 +3,11 @@ import "./Table.css";
 import * as XLSX from 'xlsx';
 import {QRCodeCanvas} from 'qrcode.react';
 import axios from 'axios'
-import DigitalClock from './DigitalClock';
 import QRCodeModal from './QrCodeModal';
 import { AiOutlineTable, AiOutlineAppstore } from 'react-icons/ai';
 import { HashLoader } from 'react-spinners';
 import {supabase} from '../supabaseClient'
+import placeholderImage from './placeholder1.jpg'
 
 function camelize(str) {
     return str
@@ -44,8 +44,8 @@ const QuoteActivity = () => {
     const [totalVisitCount, setTotalVisitCount] = useState(0);
     const [totalStockCount, setTotalStockCount] = useState(0);
     const [error, setError] = useState(null);
-    const [gridData, setGridData] = useState([]);
-    const [emailId, setEmailId] = useState('');
+    const [supabaseData, setSupabaseData] = useState([]);
+    const [imageData,setImageData]= useState([]);
 
     const handleQRCodeClick= (value) => {
         setSelectedQRCode(value);
@@ -57,31 +57,25 @@ const QuoteActivity = () => {
         setSelectedQRCode(null);
     }
 
-    useEffect (() => {
-        const fetchEmailId= async () => {
-            const {data: {emp_pics}}= await supabase.auth.getUser();
-            setEmailId(emp_pics.Email_Address)
-            console.log('Fetched Email ID:', emp_pics.Email_Address);
-        }
-        fetchEmailId();
-    },[])
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchSupabaseData = async () => {
             try {
-                const response = await axios.get('https://crm-dashboard-dipf.onrender.com/api/userdata');
-                console.log('API Response:', response.data); // Log the complete API response
-                const filteredData = response.data.filter(item => item["OwnerEmailURI"] === emailId);
-                console.log('Filtered Data:', filteredData); // Log the filtered data based on email ID
-                setGridData(filteredData);
+                const { data, error } = await supabase
+                    .from('emp_pics') // Ensure this is your correct table name
+                    .select();
+
+                if (error) throw error;
+                
+                console.log('Supabase Data:', data); // Log Supabase data for debugging
+                setSupabaseData(data); // Store Supabase data
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching data from Supabase:', error);
             }
         };
 
-        if (emailId) {
-            fetchData();
-        }
-    }, [emailId]);
+        fetchSupabaseData();
+    }, []);
+
     useEffect(() => {
         const fetchData = () => {
             fetch("https://crm-dashboard-dipf.onrender.com/api/userdata")
@@ -163,7 +157,6 @@ const QuoteActivity = () => {
                     const totalQuotationCount = Object.values(countsObj).reduce((acc, count) => acc + count, 0);
                     const totalVisitCount = Object.values(visitCountsObj).reduce((acc, count) => acc + count, 0);
                     const totalStockCount = Object.values(stockCountsObj).reduce((acc, count) => acc + count, 0);
-
                     setTotalQuotationCount(totalQuotationCount);
                     setTotalVisitCount(totalVisitCount);
                     setTotalStockCount(totalStockCount);
@@ -248,6 +241,54 @@ const QuoteActivity = () => {
         });
         setFilteredData(filteredEmployees)
     },[employees, search, selectedFilter, counts, visitCount, stockCount, cityMapping])
+
+    useEffect(() => {
+        // Filter employees based on counts and the selected filter
+        const filteredEmployees = employees.filter((fullName) => {
+            const count = counts[fullName] || 0;
+            const visitCountValue = visitCount[fullName] || 0;
+            const stockCountValue = stockCount[fullName] || 0;
+    
+            const matchesSearch = search.trim() === '' || 
+                fullName.toLowerCase().includes(search.toLowerCase()) ||
+                (cityMapping[fullName] && cityMapping[fullName].toLowerCase().includes(search.toLowerCase()));
+    
+            // Precondition: Only show employees with zero counts
+            if (selectedFilter === 'showZero') {
+                return (count === 0 && visitCountValue === 0 && stockCountValue === 0) && matchesSearch;
+            }
+    
+            return false; // Only return zero-count employees
+        });
+    
+        // Match filtered zero-count employees with Supabase data (First Name + Last Name, converted to lowercase)
+        const filteredEmployeesWithImages = filteredEmployees.map(fullName => {
+            // Find the corresponding employee data from Supabase
+            const supabaseEmployee = supabaseData.find(emp => {
+                if (emp['First Name'] && emp['Last Name']) {
+                    const fullNameSupabase = `${emp['First Name'].toLowerCase()} ${emp['Last Name'].toLowerCase()}`;
+                    return fullNameSupabase === fullName.toLowerCase();
+                }
+                return false; // Ensure we don't try to call toLowerCase on undefined
+            });
+    
+            // If a matching employee is found in Supabase, include the image URL
+            if (supabaseEmployee) {
+                return {
+                    fullName, // Keep the existing employee full name
+                    emp_pic_url: supabaseEmployee.EMP_PIC_URL // Add the image URL from Supabase
+                };
+            }
+    
+            return { fullName }; // If no match, return the employee with full name only
+        });
+    
+        setImageData(filteredEmployeesWithImages); // Update state with filtered data
+        console.log(filteredEmployeesWithImages); // Debugging log
+    }, [employees, search, selectedFilter, counts, visitCount, stockCount, cityMapping, supabaseData]);
+
+
+    
 
     return (
         <div className='table-wrapper'>
@@ -400,20 +441,30 @@ const QuoteActivity = () => {
                  />
              </table>
             ): (
-                <div className='grid-container'>
-                    {filteredData.map((name,index) => (
-                        <div key={index} className='grid-item'>
-                            <QRCodeCanvas className='qr-codes' value={`tel:${phoneNumbers[name]}`} size={100}   onClick={() => handleQRCodeClick(`tel:${phoneNumbers[name]}`)}/>
-                            <p>{camelize(name)}</p>
-                            <p>{capitalizeCity(cityMapping[name])}</p>
-                        </div>
-                    ))}
-                     <QRCodeModal 
-                     isOpen={isModalOpen}
-                     onClose={closeModal}
-                     qrCodeValue={selectedQRCode}
-                    />
-                </div>
+        <div className='grid-container'>
+            {filteredData.map((name, index) => {
+                const employee = imageData.find(emp => emp.fullName === name); // Get employee data
+                const imageUrl = employee?.emp_pic_url; // Get the image URL or undefined
+                return (
+                    <div key={index} className='grid-item'>
+                        <img 
+                            className='employee-image' 
+                            src={imageUrl || placeholderImage} 
+                            alt={camelize(name)} 
+                            onClick={() => handleQRCodeClick(`tel:${phoneNumbers[name]}`)} // Opens QR code modal
+                            style={{ cursor: 'pointer' }} // Add cursor style for better UX
+                        />
+                        <p>{camelize(name)}</p>
+                        <p>{capitalizeCity(cityMapping[name])}</p>
+                    </div>
+                        );
+                    })}
+                    <QRCodeModal 
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                        qrCodeValue={selectedQRCode}
+            />
+        </div>
                 
             )}
                 </>
