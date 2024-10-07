@@ -29,7 +29,6 @@ const QuoteActivity = () => {
     const [stockCount, setStockCount] = useState({});
     const [employees, setEmployees] = useState([]);
     const [phoneNumbers, setPhoneNumbers] = useState({});
-    const [emails,setEmails]= useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [refreshInterval, setRefreshInterval] = useState(20000);
     const [search,setSearch] = useState("");  
@@ -46,7 +45,7 @@ const QuoteActivity = () => {
     const [error, setError] = useState(null);
     const [supabaseData, setSupabaseData] = useState([]);
     const [imageData,setImageData]= useState([]);
-
+    const [emails,setEmails] =useState([]);
     const handleQRCodeClick= (value) => {
         setSelectedQRCode(value);
         setIsModalOpen(true);
@@ -60,19 +59,31 @@ const QuoteActivity = () => {
     useEffect(() => {
         const fetchSupabaseData = async () => {
             try {
-                const { data, error } = await supabase
-                    .from('emp_pics') // Ensure this is your correct table name
-                    .select();
-
-                if (error) throw error;
-                
-                console.log('Supabase Data:', data); // Log Supabase data for debugging
-                setSupabaseData(data); // Store Supabase data
+                let allData = [];
+                let offset = 0;
+                const limit = 1000; // Number of records to fetch in each batch
+    
+                while (true) {
+                    const { data, error } = await supabase
+                        .from('emp_pics') // Ensure this is your correct table name
+                        .select('*') // You can specify columns if needed
+                        .range(offset, offset + limit - 1); // Fetch records in batches
+    
+                    if (error) throw error;
+    
+                    if (data.length === 0) break; // Stop if no more records are returned
+    
+                    allData = [...allData, ...data]; // Append the new records
+                    offset += limit; // Increment offset to fetch the next batch
+                }
+    
+                console.log('Supabase Data:', allData); // Log Supabase data for debugging
+                setSupabaseData(allData); // Store Supabase data
             } catch (error) {
                 console.error('Error fetching data from Supabase:', error);
             }
         };
-
+    
         fetchSupabaseData();
     }, []);
 
@@ -154,6 +165,7 @@ const QuoteActivity = () => {
                     });
                     setEmployees(rpTechEmployees);
                     setEmails(emailMap);
+                    console.log(emails)
                     const totalQuotationCount = Object.values(countsObj).reduce((acc, count) => acc + count, 0);
                     const totalVisitCount = Object.values(visitCountsObj).reduce((acc, count) => acc + count, 0);
                     const totalStockCount = Object.values(stockCountsObj).reduce((acc, count) => acc + count, 0);
@@ -170,7 +182,7 @@ const QuoteActivity = () => {
         fetchData();
         const interval = setInterval(fetchData, refreshInterval);
         return () => clearInterval(interval);
-    }, [refreshInterval]);
+    }, [refreshInterval,emails]);
 
     const handleScroll = () => {
         if (window.innerWidth <= 1650) {
@@ -244,49 +256,47 @@ const QuoteActivity = () => {
 
     useEffect(() => {
         // Filter employees based on counts and the selected filter
-        const filteredEmployees = employees.filter((fullName) => {
+        const filteredEmployees = Object.entries(emails).filter(([fullName, email]) => {
             const count = counts[fullName] || 0;
             const visitCountValue = visitCount[fullName] || 0;
             const stockCountValue = stockCount[fullName] || 0;
     
-            const matchesSearch = search.trim() === '' || 
+            const matchesSearch =
+                search.trim() === '' ||
                 fullName.toLowerCase().includes(search.toLowerCase()) ||
                 (cityMapping[fullName] && cityMapping[fullName].toLowerCase().includes(search.toLowerCase()));
     
             // Precondition: Only show employees with zero counts
             if (selectedFilter === 'showZero') {
-                return (count === 0 && visitCountValue === 0 && stockCountValue === 0) && matchesSearch;
+                return count === 0 && visitCountValue === 0 && stockCountValue === 0 && matchesSearch;
             }
     
             return false; // Only return zero-count employees
         });
     
-        // Match filtered zero-count employees with Supabase data (First Name + Last Name, converted to lowercase)
-        const filteredEmployeesWithImages = filteredEmployees.map(fullName => {
-            // Find the corresponding employee data from Supabase
+        // Match filtered zero-count employees with Supabase data (using emails)
+        const filteredEmployeesWithImages = filteredEmployees.map(([fullName, email]) => {
+            // Find the corresponding employee data from Supabase by comparing email
             const supabaseEmployee = supabaseData.find(emp => {
-                if (emp['First Name'] && emp['Last Name']) {
-                    const fullNameSupabase = `${emp['First Name'].toLowerCase()} ${emp['Last Name'].toLowerCase()}`;
-                    return fullNameSupabase === fullName.toLowerCase();
-                }
-                return false; // Ensure we don't try to call toLowerCase on undefined
+                return emp['Email_Address']?.toLowerCase() === email.toLowerCase(); // Match by email
             });
     
             // If a matching employee is found in Supabase, include the image URL
             if (supabaseEmployee) {
                 return {
                     fullName, // Keep the existing employee full name
+                    email, // Add the email to the returned object
                     emp_pic_url: supabaseEmployee.EMP_PIC_URL // Add the image URL from Supabase
                 };
             }
     
-            return { fullName }; // If no match, return the employee with full name only
+            return { fullName, email }; // If no match, return the employee with full name and email
         });
     
         setImageData(filteredEmployeesWithImages); // Update state with filtered data
         console.log(filteredEmployeesWithImages); // Debugging log
-    }, [employees, search, selectedFilter, counts, visitCount, stockCount, cityMapping, supabaseData]);
-
+    }, [emails, search, selectedFilter, counts, visitCount, stockCount, cityMapping, supabaseData]);
+    
 
     
 
