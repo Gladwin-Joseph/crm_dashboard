@@ -33,7 +33,7 @@ const QuoteActivity = () => {
     const [refreshInterval, setRefreshInterval] = useState(20000);
     const [search,setSearch] = useState("");  
     const [filteredData, setFilteredData] = useState([]);
-    const [selectedFilter,setSelectedFilter]= useState('showZero')
+    const [selectedFilter,setSelectedFilter]= useState('showZero');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedQRCode,setSelectedQRCode] = useState(null);
     const [view,setView]= useState('table');
